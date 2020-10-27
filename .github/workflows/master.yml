@@ -1,0 +1,57 @@
+# This workflow will do a clean install of node dependencies and build the source code
+
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm ci
+    - run: npm run build --if-present
+    - uses: kciter/aws-ecr-action@v1
+      with:
+        access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+        repo: proofme.id/checkin-backend
+        region: eu-central-1
+        tags: prod,${{ github.sha }}
+        create_repo: true
+      env:
+        CI: true
+#  deploy-trigger:
+#    name: Trigger
+#    runs-on: ubuntu-latest
+#    needs: build-and-push # set needs only last job except this job
+#    steps:
+#      - name: Trigger deployment Job
+#        uses: appleboy/jenkins-action@master
+#        with:
+#          url: "https://build.didux.network"
+#          user: "Elkan"
+#          token: ${{ secrets.JENKINS_TOKEN }}
+#          job: "AuthenticationService"
+  slack:
+    name: Slack
+    needs: build-and-push # set needs only last job except this job
+    runs-on: ubuntu-latest
+    steps:
+      - uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow # selectable (default: repo,message)
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+        if: always() # Pick up events even if the job fails or is canceled.

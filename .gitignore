@@ -1,0 +1,10 @@
+node_modules
+build
+!jwt-keys
+jwt-keys/*
+.idea
+data
+.DS_Store
+posters/*.png
+
+src/config/config.ts

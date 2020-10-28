@@ -15,7 +15,7 @@ import { SignalingServer } from "../signaling/signalingServer";
 import { sendEmail } from "../utils/email-utils";
 
 const app = express();
-const applicationTitle = 'Didux.io Template Backend';
+const applicationTitle = config.application_name;
 const port = parseInt(process.env.PORT || '4015');
 const swaggerSpec = swaggerJSDoc({
     swaggerDefinition: {

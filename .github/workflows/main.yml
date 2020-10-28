@@ -4,7 +4,7 @@ name: Build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build-and-push:
@@ -25,7 +25,7 @@ jobs:
         access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         account_id: ${{ secrets.AWS_ACCOUNT_ID }}
-        repo: proofme.id/checkin-backend
+        repo: didux.io/boilerplate-backend
         region: eu-central-1
         tags: prod,${{ github.sha }}
         create_repo: true

@@ -6,14 +6,14 @@ export class SignalingServer {
     wss: any;
 
     public startSignal(server: any) {
-        console.log("Starting Signaling server.");
+        console.log('Starting Signaling server.');
         this.wss = new WebSocket.Server({ server });
 
         const sendTo = (datachannel: RTCDataChannel, message: any) => {
             datachannel.send(JSON.stringify(message));
         };
 
-        this.wss.on("connection", (ws: any, request: any, client: any) => {
+        this.wss.on('connection', (ws: any) => {
             ws.isAlive = true; // Keep things alive
             ws.uuid = uuid(); // Unique identifier for the client
             ws.did = null; // When authenticated: publicKey or didAddress
@@ -30,184 +30,184 @@ export class SignalingServer {
                 // will crash. Ignore this error.
             });
 
-            ws.on("message", (msg: any) => {
+            ws.on('message', (msg: any) => {
                 let data: any;
 
-                //accepting only JSON messages
+                // accepting only JSON messages
                 try {
                     data = JSON.parse(msg);
                 } catch (e) {
-                    console.log("Invalid JSON");
+                    console.log('Invalid JSON');
                     data = {};
                 }
                 const { type, token, host, offer, answer, candidate } = data;
                 switch (type) {
                     // when a user tries to login
-                    case "auth":
+                    case 'auth':
                         // Check if username is available
                         if (!token) {
                             sendTo(ws, {
-                                type: "auth",
+                                type: 'auth',
                                 success: false,
-                                message: "Could not validate token"
+                                message: 'Could not validate token'
                             });
                         } else {
                             // Validate token
                             ws.authenticated = true;
                             sendTo(ws, {
-                                type: "AUTH",
+                                type: 'AUTH',
                                 success: true,
-                                message: "Authentication successful"
+                                message: 'Authentication successful'
                             });
                         }
                         break;
-                    case "host":
+                    case 'host':
                         // Setup a channel (Host)
-                        ws.host = true
+                        ws.host = true;
                         sendTo(ws, {
-                            type: "host",
+                            type: 'host',
                             success: true,
-                            message: "Host initialised " + ws.uuid,
+                            message: 'Host initialised ' + ws.uuid,
                             uuid: ws.uuid
                         });
                         break;
-                    case "connect":
+                    case 'connect':
                         // Connect to a channel (Host)
-                        let hosts = [...this.wss.clients].filter(function(client) {
+                        const hosts = [...this.wss.clients].filter((client) => {
                             return client.uuid === host && client.connected === null && client.host === true;
                         });
 
                         if (hosts.length === 1) {
                             sendTo(hosts[0], {
-                                type: "connected",
+                                type: 'connected',
                                 success: true,
-                                message: "Client connected " + ws.uuid,
+                                message: 'Client connected ' + ws.uuid,
                                 uuid: ws.uuid
                             });
 
                             sendTo(ws, {
-                                type: "connected",
+                                type: 'connected',
                                 success: true,
-                                message: "Connected to " + host,
+                                message: 'Connected to ' + host,
                             });
 
                             // Link them together
-                            ws.connected = hosts[0].uuid
-                            hosts[0].connected = ws.uuid
+                            ws.connected = hosts[0].uuid;
+                            hosts[0].connected = ws.uuid;
                         } else {
                             sendTo(ws, {
-                                type: "connected",
+                                type: 'connected',
                                 success: false,
-                                message: "Could not connect to " + host,
+                                message: 'Could not connect to ' + host,
                             });
                         }
                         break;
-                    case "offer":
+                    case 'offer':
                         // if Client exists then send him offer details
                         if (ws.connected != null && this.wss.clients.size > 0) {
 
-                            let hosts = [...this.wss.clients].filter(function(client) {
+                            const hostsOffer = [...this.wss.clients].filter((client) => {
                                 return client.connected === ws.uuid;
                             });
 
-                            if (hosts.length === 1) {
-                                sendTo(hosts[0], {
-                                    type: "offer",
+                            if (hostsOffer.length === 1) {
+                                sendTo(hostsOffer[0], {
+                                    type: 'offer',
                                     success: true,
                                     offer
                                 });
                                 sendTo(ws, {
-                                    type: "offer",
+                                    type: 'offer',
                                     success: true,
                                     offer
                                 });
                             } else {
                                 sendTo(ws, {
-                                    type: "offer",
+                                    type: 'offer',
                                     success: false,
                                     offer,
-                                    message: "Connection not found."
+                                    message: 'Connection not found.'
                                 });
                             }
                         } else {
                             sendTo(ws, {
-                                type: "offer",
+                                type: 'offer',
                                 success: false,
                                 offer,
-                                message: "Too soon..."
+                                message: 'Too soon...'
                             });
                         }
                         break;
-                    case "answer":
+                    case 'answer':
                         // if Client response to an offer with an answer
                         if (ws.connected != null) {
 
-                            let hosts = [...this.wss.clients].filter(function(client) {
+                            const hostsOffer = [...this.wss.clients].filter((client) => {
                                 return client.connected === ws.uuid;
                             });
 
-                            if (hosts.length === 1) {
-                                sendTo(hosts[0], {
-                                    type: "answer",
+                            if (hostsOffer.length === 1) {
+                                sendTo(hostsOffer[0], {
+                                    type: 'answer',
                                     success: true,
                                     answer
                                 });
                                 sendTo(ws, {
-                                    type: "answer",
+                                    type: 'answer',
                                     success: true,
                                     answer
                                 });
                             } else {
                                 sendTo(ws, {
-                                    type: "answer",
+                                    type: 'answer',
                                     success: false,
                                     answer,
-                                    message: "Connection not found."
+                                    message: 'Connection not found.'
                                 });
                             }
                         } else {
                             sendTo(ws, {
-                                type: "answer",
+                                type: 'answer',
                                 success: false,
                                 answer,
-                                message: "Too soon..."
+                                message: 'Too soon...'
                             });
                         }
                         break;
-                    case "candidate":
+                    case 'candidate':
                         // if Client response to an offer with an answer
                         if (ws.connected != null) {
 
-                            let hosts = [...this.wss.clients].filter(function(client) {
+                            const hostsOffer = [...this.wss.clients].filter((client) => {
                                 return client.connected === ws.uuid;
                             });
 
-                            if (hosts.length === 1) {
-                                sendTo(hosts[0], {
-                                    type: "candidate",
+                            if (hostsOffer.length === 1) {
+                                sendTo(hostsOffer[0], {
+                                    type: 'candidate',
                                     success: true,
                                     candidate
                                 });
                             } else {
                                 sendTo(ws, {
-                                    type: "candidate",
+                                    type: 'candidate',
                                     success: false,
                                     candidate,
-                                    message: "Connection not found."
+                                    message: 'Connection not found.'
                                 });
                             }
                         } else {
                             sendTo(ws, {
-                                type: "candidate",
+                                type: 'candidate',
                                 success: false,
                                 candidate,
-                                message: "Too soon..."
+                                message: 'Too soon...'
                             });
                         }
                         break;
-                    case "leave":
+                    case 'leave':
                         if (ws.connected != null) {
-                            let clients = [...this.wss.clients].filter(function(client) {
+                            const clients = [...this.wss.clients].filter((client) => {
                                 return client.connected === ws.uuid;
                             });
 
@@ -215,22 +215,22 @@ export class SignalingServer {
 
                             if (clients.length === 1) {
                                 sendTo(clients[0], {
-                                    type: "leave",
+                                    type: 'leave',
                                     success: true
                                 });
                                 clients[0].connected = null;
 
                                 sendTo(ws, {
-                                    type: "leave",
+                                    type: 'leave',
                                     success: true,
-                                    message: "Connection left.",
+                                    message: 'Connection left.',
                                     uuid: ws.uuid
                                 });
                             } else {
                                 sendTo(ws, {
-                                    type: "leave",
+                                    type: 'leave',
                                     success: false,
-                                    message: "Connection not found.",
+                                    message: 'Connection not found.',
                                     uuid: ws.uuid
                                 });
                             }
@@ -238,47 +238,47 @@ export class SignalingServer {
                         } else {
                             ws.uuid = uuid();
                             sendTo(ws, {
-                                type: "leave",
+                                type: 'leave',
                                 success: false,
-                                message: "Not connected to host/client.",
+                                message: 'Not connected to host/client.',
                                 uuid: ws.uuid
                             });
                         }
                         break;
                     default:
                         sendTo(ws, {
-                            type: "error",
-                            message: "Command not found: " + type
+                            type: 'error',
+                            message: 'Command not found: ' + type
                         });
                         break;
                 }
             });
 
-            ws.on("close", (ws: any, request: any, client: any) => {
-                if (ws.connected != null) {
-                    let clients = [...this.wss.clients].filter(function(client) {
-                        return client.connected === ws.uuid;
+            ws.on('close', (wsArg: any, request: any, client: any) => {
+                if (wsArg.connected != null) {
+                    const clients = [...this.wss.clients].filter((clientArg) => {
+                        return clientArg.connected === wsArg.uuid;
                     });
 
                     if (clients.length === 1) {
                         sendTo(clients[0], {
-                            type: "leave",
+                            type: 'leave',
                             success: true
                         });
                         clients[0].connected = null;
                     }
-                    ws.connected = null;
+                    wsArg.connected = null;
                 }
             });
-            //send immediately a feedback to the incoming connection
+            // send immediately a feedback to the incoming connection
             ws.send(
                 JSON.stringify({
-                    type: "connect",
-                    message: "Well hello there, I am the Didux.io Template Signaling Server",
+                    type: 'connect',
+                    message: 'Well hello there, I am the Signaling Server',
                     success: true,
                 })
             );
-            console.log("Connection received from:", ws.uuid);
+            console.log('Connection received from:', ws.uuid);
         });
     }
 }

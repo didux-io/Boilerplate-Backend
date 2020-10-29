@@ -6,13 +6,11 @@ import swaggerJSDoc = require('swagger-jsdoc');
 import bodyParser = require("body-parser");
 import { config } from "../config/config";
 import * as Web3 from '@smilo-platform/web3';
-import * as fs from "fs";
 import * as http from "http";
 import { Sequelize } from 'sequelize-typescript';
 import { User } from "../db/models/user";
 import { setWeb3Provider } from "../utils/web3-utils";
-import { SignalingServer } from "../signaling/signalingServer";
-import { sendEmail } from "../utils/email-utils";
+import { SignalingServer } from "../webrtc/signalingServer";
 
 const app = express();
 const applicationTitle = 'Didux.io Template Backend';

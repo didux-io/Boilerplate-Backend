@@ -13,7 +13,7 @@ import { setWeb3Provider } from "../utils/web3-utils";
 import { SignalingServer } from "../webrtc/signalingServer";
 
 const app = express();
-const applicationTitle = 'Didux.io Template Backend';
+const applicationTitle = config.application_name;
 const port = parseInt(process.env.PORT || '4015');
 const swaggerSpec = swaggerJSDoc({
     swaggerDefinition: {

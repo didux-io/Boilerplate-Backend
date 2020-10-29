@@ -1,9 +1,10 @@
 {
-	"name": "didux-io-backend-template",
+	"name": "APPLICATION_NAME",
 	"version": "1.0.0",
 	"description": "Template Backend",
 	"main": "./build/src/main/index.js",
 	"scripts": {
+		"prebuild": "node prebuild.js",
 		"start": "nodemon ./build/main/index.js",
 		"build": "tsc",
 		"watch": "tsc -w"
@@ -16,7 +17,7 @@
 		"url": "https://github.com/Proofme-id/Proofme.id-AuthService/issues"
 	},
 	"homepage": "https://github.com/Proofme-id/Proofme.id-AuthService",
-	"author": "Proofme.id",
+	"author": "Didux.io",
 	"license": "GPL-3.0-only",
 	"dependencies": {
 		"@smilo-platform/web3": "1.0.0-beta.37",
@@ -63,7 +64,8 @@
 		"swagger-jsdoc": "^4.0.0",
 		"swagger-ui-express": "^4.1.4",
 		"typescript": "^3.3.3",
-		"uuidv4": "^6.0.8"
+		"uuidv4": "^6.0.8",
+		"ws": "^7.3.1"
 	},
 	"devDependencies": {
 		"@types/superagent": "^4.1.1",

@@ -7,7 +7,7 @@ To run this application you need to have npm installed.
 Create a 'jwt-keys' folder in the root directory of this project.
 ```mkdir jwt-keys```
 
-When prompted for a passphrase `DONT'T` add it.
+When prompted for a passphrase `DON'T` add it.
 
 Execute command for RS256 keypair generation. <br/>
 ```ssh-keygen -t rsa -b 4096 -m PEM -f ./jwt-keys/private.pem```
@@ -18,7 +18,7 @@ Execute command for RS256 keypair generation. <br/>
 # Running the application
 
 Start database 
-```docker run --name template-db --rm -h checkindb -e POSTGRES_PASSWORD=mysecretpassword -p 5432:5432 -d postgres:9.6```
+```docker run --name DB_HOST --rm -h DB_HOST -e POSTGRES_PASSWORD=DB_PASSWORD -e POSTGRES_USER=DB_USER -e POSTGRES_DB=DB_NAME -p 5432:5432 -d postgres:9.6```
 
 To run the application make sure to run tsc first. For development you can use an npm command to start a watcher that watches the file changes and creates a new build folder. For example start two terminals and use this command for a watcher:
 

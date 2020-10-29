@@ -25,6 +25,6 @@ export function getJWTToken(user: User): string {
 }
 
 export async function generateChallenge(publicKey: string, did: string, loginEndpoint: string, timestamp: string): Promise<string> {
-    const customer = config.customer;
-    return `${publicKey}-${did}-${timestamp}-${customer}-${loginEndpoint}`;
+    const application = config.application_name;
+    return `${publicKey}-${did}-${timestamp}-${application}-${loginEndpoint}`;
 }

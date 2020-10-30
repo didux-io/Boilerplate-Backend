@@ -26,6 +26,8 @@ const router = Router();
  */
 router.post('/registrate', emailConfigEnabled, accountController.createAccount);
 
+router.post('/finishRegistration', emailConfigEnabled, checkJwtToken, accountController.finishRegistration);
+
 router.patch('/:userId', checkJwtToken, accountController.patchUserProfile);
 
 module.exports = router;

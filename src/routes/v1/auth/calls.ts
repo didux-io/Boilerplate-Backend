@@ -26,6 +26,10 @@ router.get('/check', checkJwtToken, authChallengeController.checkToken);
 
 router.get('/config', authChallengeController.getConfig);
 
+router.get('/recoverAccount/:recoveryCode/:redirectUrl', authChallengeController.recoverAccount);
+
+router.get('/cancelRecoverAccount/:cancelRecoveryCode/:redirectUrl', authChallengeController.cancelRecoverAccount);
+
 router.get('/verifyemail/:verificationCode/:loginRedirect', emailConfigEnabled, authChallengeController.verifyEmail);
 
 router.post('/authemail', emailConfigEnabled, authChallengeController.authenticateUser);

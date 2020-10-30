@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { User } from '../db/models/user';
 import * as jwt_decode from 'jwt-decode';
 import { getJWTToken } from '../utils/token-utils';
-import { createVerificationCode, sendEmail } from '../utils/email-utils';
+import { createVerificationCode, sendVerificationEmail } from '../utils/email-utils';
 import { generatePasswordHash } from '../utils/global-utils';
 
 export async function createAccount(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -14,7 +14,7 @@ export async function createAccount(req: Request, res: Response, next: NextFunct
         res.status(400).send({ error: 'Missing password' });
     } else {
         let user = await User.findOne({where: { email }});
-        // If the user has any information
+        // If the user has any information (setup with mobile WebRTC?)
         if (!!user) {
             // If the user has any information AND did not yet do the verificationCode steps
             if (!user.emailVerificationCode) {
@@ -26,7 +26,7 @@ export async function createAccount(req: Request, res: Response, next: NextFunct
                 }, {
                     where: { id: user.id }
                 });
-                sendEmail(email, verificationCode);
+                sendVerificationEmail(email, verificationCode);
                 res.status(200).send({message: "Updated!"});
             } else {
                 res.status(400).send({ message: "Email already exists" });
@@ -40,18 +40,18 @@ export async function createAccount(req: Request, res: Response, next: NextFunct
                 await User.create({
                     email,
                     password: hashedPassword,
-                    userPower: 100,
+                    userPower: 1,
                     emailVerificationCode: verificationCode
                 });
             } else {
                 await User.create({
                     email,
                     password: hashedPassword,
-                    userPower: 1,
+                    userPower: 100,
                     emailVerificationCode: verificationCode
                 });
             }
-            sendEmail(email, verificationCode);
+            sendVerificationEmail(email, verificationCode);
             res.status(200).send({message: "Created!"});
         }
     }
@@ -71,5 +71,35 @@ export async function patchUserProfile(req: Request, res: Response, next: NextFu
     } catch (error) {
         console.error(error);
         res.status(400).send();
+    }
+}
+
+export async function finishRegistration(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const username = req.body.username;
+    const termsAndPrivacyAccepted = req.body.termsAndPrivacyAccepted;
+    const newsLetterAccepted = req.body.newsLetterAccepted;
+    if (!username) {
+        res.status(400).send({ error: 'Missing username' });
+    } else if (termsAndPrivacyAccepted === 'undefined') {
+        res.status(400).send({ error: 'Missing termsAndPrivacyAccepted' });
+    } else if (newsLetterAccepted === 'undefined') {
+        res.status(400).send({ error: 'Missing newsLetterAccepted' });
+    } else {
+        try {
+            const jwtDecoded: any = jwt_decode(req.headers.authorization);
+            await User.update({
+                username,
+                termsAndPrivacyAccepted,
+                newsLetterAccepted
+            }, {
+                where: { id: jwtDecoded.userId }
+            });
+            const user = await User.findOne({where: { id: jwtDecoded.userId}});
+            const token = getJWTToken(user);
+            res.status(200).send({token});
+        } catch (error) {
+            console.error(error);
+            res.status(400).send();
+        }
     }
 }

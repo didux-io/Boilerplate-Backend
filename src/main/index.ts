@@ -10,7 +10,7 @@ import * as http from "http";
 import { Sequelize } from 'sequelize-typescript';
 import { User } from "../db/models/user";
 import { setWeb3Provider } from "../utils/web3-utils";
-import { SignalingServer } from "../webrtc/signalingServer";
+import { SignalingServer } from "@proofmeid/webrtc";
 
 const app = express();
 const applicationTitle = config.application_name;
@@ -45,6 +45,14 @@ app.use("/", routes);
 
 const server = http.createServer(app)
 const signal = new SignalingServer();
+signal.setRTCConnectionConfig({
+    stunEnabled: config.stunEnabled,
+    stunUrl: config.stunUrl,
+    turnEnabled: config.turnEnabled,
+    turnExpiration: config.turnExpiration,
+    turnSecret: config.turnSecret,
+    turnUrl: config.turnUrl
+})
 signal.startSignal(server);
 
 const sequelize = new Sequelize({

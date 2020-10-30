@@ -31,5 +31,5 @@ And another terminal window to run the application:
 
 ## User Powers
 
-1 = User
-100 = Admin
+1 = Admin
+100 = User

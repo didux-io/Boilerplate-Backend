@@ -4,6 +4,7 @@ import {Table, Column, Model, CreatedAt, UpdatedAt, AllowNull, ForeignKey, Uniqu
 export class User extends Model<User> {
 
     @AllowNull(false)
+    @Unique
     @Column
     email: string;
 
@@ -12,10 +13,12 @@ export class User extends Model<User> {
     password: string;
 
     @AllowNull(true)
+    @Unique
     @Column
     publicKey: string;
 
     @AllowNull(true)
+    @Unique
     @Column
     did: string;
 
@@ -25,6 +28,26 @@ export class User extends Model<User> {
 
     @AllowNull(true)
     @Unique
+    @Column
+    username: string;
+
+    @AllowNull(true)
+    @Column
+    termsAndPrivacyAccepted: boolean;
+
+    @AllowNull(true)
+    @Column
+    newsLetterAccepted: boolean;
+
+    @CreatedAt
+    @Column
+    createdAt: Date;
+
+    @UpdatedAt
+    @Column
+    updatedAt: Date;
+
+    @AllowNull(true)
     @Column
     emailVerified: boolean;
 
@@ -36,13 +59,24 @@ export class User extends Model<User> {
     @AllowNull(true)
     @Unique
     @Column
-    username: string;
+    accountRecoveryCode: string;
 
-    @CreatedAt
+    @AllowNull(true)
+    @Unique
     @Column
-    createdAt: Date;
+    accountRecoveryCancelCode: string;
 
-    @UpdatedAt
+    @AllowNull(true)
     @Column
-    updatedAt: Date;
+    accountRecoveryDate: Date;
+
+    @AllowNull(true)
+    @Unique
+    @Column
+    accountRecoveryPublicKey: string;
+
+    @AllowNull(true)
+    @Unique
+    @Column
+    accountRecoveryDid: string;
 }

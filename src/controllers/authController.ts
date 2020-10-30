@@ -7,7 +7,9 @@ import { generateChallenge, getJWTToken } from '../utils/token-utils';
 import { User } from "../db/models/user";
 import * as bcrypt from 'bcrypt';
 import { getClaims } from '../utils/jwt-utils';
-import { emailConfigEnabled } from '../middlewares/emailEnabledMiddleware';
+import { createRecoveryCancelCode, createRecoveryCode, sendRecoveryAccount } from '../utils/email-utils';
+import { calculateMinutesDifference } from '../utils/global-utils';
+import { Op } from 'sequelize';
 
 export async function getAuthChallenge(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
@@ -79,59 +81,99 @@ export async function validateSignature(req: Request, res: Response, next: NextF
         return;
     }
     // So we can authenticate with credentials
-    // - Create an account for the email in this case if it does not yet exists
-    // - Add the email to the JWT
-    let email = null;
-    let user = null;
-    if (credentials) {
+    // - Create an account for the email in this case if it does not yet exist
+    // - If the account exists, check if the publickey is the same, otherwhise send 
+    let user = await User.findOne({ where: { publicKey }});
+    let recoveryUser = null;
+    if (!user && credentials) {
         const validCredentials = await isValidCredentials(credentials);
         if (validCredentials) {
-            const emailCred = credentials.credential.EMAIL.credentialSubject.credential.value;
-            email = emailCred;
-            const userCount = await User.count();
-            // If there are no users make the first one admin
-            if (userCount === 0) {
-                user = await User.create({
-                    email: emailCred,
-                    did,
-                    publicKey,
-                    userPower: 100
-                });
-            // And 
-            } else {
-                user = await User.findOne({where: {email: emailCred}});
-                if (user) {
-                    console.log('User already exists, updating!');
-                    await User.update({
-                        did,
-                        publicKey,
-                    }, {
-                        where: { id: user.id }
-                    });
-                } else {
-                    console.log('User not yet created, create one!');
+            // Email validation
+            if (credentials && credentials.credential && credentials.credential.EMAIL) {
+                const email = credentials.credential.EMAIL.credentialSubject.credential.value;
+                const userCount = await User.count();
+                // If there are no users make the first one admin
+                if (userCount === 0) {
                     user = await User.create({
-                        email: emailCred,
+                        email,
                         did,
                         publicKey,
                         userPower: 1
                     });
+                } else {
+                    // Let's check if the email exists and the publicKey is not the same as being sent right now
+                    recoveryUser = await User.findOne({ where: { 
+                        email, 
+                        publicKey: {
+                            [Op.not]: publicKey
+                        }
+                    }});
+                    // If we can find such a user, it already exists. Proces recovery process
+                    if (recoveryUser) {
+                        console.log('User already exists with WebRTC, sending recovery email!');
+                        // Send recovery email
+                        const recoveryCode = createRecoveryCode();
+                        const recoveryCancelCode = createRecoveryCancelCode();
+                        await User.update({
+                            accountRecoveryCode: recoveryCode,
+                            accountRecoveryCancelCode: recoveryCancelCode,
+                            accountRecoveryDate: new Date(),
+                            accountRecoveryPublicKey: publicKey,
+                            accountRecoveryDid: did
+                        }, {
+                            where: { id: recoveryUser.id }
+                        });
+                        sendRecoveryAccount(recoveryUser.email, recoveryCode, recoveryCancelCode);
+                    // If we could not find any user
+                    } else {
+                        // Check if we can find a user with an email (regardless of WebRTC or 'normal' login)
+                        const foundUser = await User.findOne({ where: { email }});
+                        // So if we found a user, update it with the WebRTC information (publickey + did)
+                        if (foundUser) {
+                            await User.update({
+                                did,
+                                publicKey
+                            }, {
+                                where: { id: foundUser.id }
+                            });
+                            user = await User.findOne({ where: { email }});
+                        // Otherwhise create the new WebRTC user
+                        } else {
+                            console.log('User not yet created, create one!');
+                            user = await User.create({
+                                email,
+                                did,
+                                publicKey,
+                                userPower: 100
+                            });
+                        }
+                    }
                 }
             }
         }
     }
 
     try {
-        const challenge = await generateChallenge(publicKey, did, loginEndpoint, timestamp);
-        const signingAddress = await config.web3.eth.accounts.recover(challenge, signature);
-        if (signingAddress.toLowerCase() === publicKey.toLowerCase()) {
+        if (user) {
+            const challenge = await generateChallenge(publicKey, did, loginEndpoint, timestamp);
+            const signingAddress = await config.web3.eth.accounts.recover(challenge, signature);
+            if (signingAddress.toLowerCase() === publicKey.toLowerCase()) {
+                res.status(200).send({
+                    token: getJWTToken(user)
+                });
+                return;
+            } else {
+                res.status(400).send({ error: 'Publickey doesn\'t match signature.' });
+                return;
+            }
+        } else if (recoveryUser) {
             res.status(200).send({
-                token: getJWTToken(user)
-            });
-            return;
-        } else {
-            res.status(400).send({ error: 'Publickey doesn\'t match signature.' });
-            return;
+                extra: 'recover'
+            })
+        } else if (!recoveryUser) {
+            res.status(200).send({
+                extra: 'identify'
+            })
         }
     } catch (error) {
         console.error(error);
@@ -141,30 +183,20 @@ export async function validateSignature(req: Request, res: Response, next: NextF
 }
 
 export async function checkToken(req: Request, res: Response, next: NextFunction): Promise<void> {
-    if (res.locals.skipJwtCheck) {
-        next();
-    } else if (!req.headers.authorization) {
-        res.status(400).send({ error: 'req.headers.authorization is missing' });
-        next("req.headers.authorization is missing");
-    } else {
-        const token = req.headers.authorization;
-        const cert = fs.readFileSync('./jwt-keys/public.pem');
-        jwt.verify(token, cert, (err: any) => {
-            if (err) {
-                res.status(400).send({ error: 'JWT_INVALID' });
-                next('JWT not valid.');
-            } else {
-                const payload = getClaims(req);
-                res.status(200).send({ payload: payload });
-            }
-        });
-    }
+    const token = req.headers.authorization;
+    const cert = fs.readFileSync('./jwt-keys/public.pem');
+    jwt.verify(token, cert, (err: any) => {
+        if (err) {
+            res.status(400).send({ error: 'JWT_INVALID' });
+            next('JWT not valid.');
+        } else {
+            const payload = getClaims(req);
+            res.status(200).send({ payload: payload });
+        }
+    });
 }
 
 export async function verifyEmail(req: Request, res: Response, next: NextFunction): Promise<void> {
-    if (res.locals.skipJwtCheck) {
-        next();
-    } 
     const verificationCode = req.params.verificationCode;
     const loginRedirect = req.params.loginRedirect;
     const user = await User.findOne({where: {emailVerificationCode: verificationCode}});
@@ -218,5 +250,56 @@ export async function getConfig(req: Request, res: Response, next: NextFunction)
         emailEnabled: config.emailEnabled,
         webRtcEnabled: config.webRtcEnabled
     });
+}
+
+export async function recoverAccount(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const recoveryCode = req.params.recoveryCode;
+    const redirectUrl = req.params.redirectUrl;
+
+    const user = await User.findOne({where: { accountRecoveryCode: recoveryCode }});
+
+    if (user) {
+        const minutesDifference = calculateMinutesDifference(new Date(), user.accountRecoveryDate);
+        console.log('minutesDifference:', minutesDifference);
+        if (minutesDifference < config.accountRecoveryTimeInMinutes) {
+            await User.update({
+                publicKey: user.accountRecoveryPublicKey,
+                did: user.accountRecoveryDid,
+                accountRecoveryCode: null,
+                accountRecoveryCancelCode: null,
+                accountRecoveryDate: null,
+                accountRecoveryPublicKey: null,
+                accountRecoveryDid: null
+            }, {
+                where: { accountRecoveryCode: recoveryCode }
+            })
+            res.redirect(redirectUrl + '?emailRecovered=true');
+        } else {
+            res.redirect(redirectUrl + '?emailRecoveryExpired=true');
+        }
+    } else {
+        res.redirect(redirectUrl + '?emailRecovered=false');
+    }
+}
+
+export async function cancelRecoverAccount(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const cancelRecoveryCode = req.params.cancelRecoveryCode;
+    const redirectUrl = req.params.redirectUrl;
+    const user = await User.findOne({where: { accountRecoveryCancelCode: cancelRecoveryCode }});
+
+    if (user) {
+        await User.update({
+            accountRecoveryCode: null,
+            accountRecoveryCancelCode: null,
+            accountRecoveryDate: null,
+            accountRecoveryPublicKey: null,
+            accountRecoveryDid: null
+        }, {
+            where: { accountRecoveryCancelCode: cancelRecoveryCode }
+        })
+        res.redirect(redirectUrl + '?emailRecoverCancelled=true');
+    } else {
+        res.redirect(redirectUrl + '?emailRecoverCancelled=false');
+    }
 }
 

@@ -91,7 +91,6 @@ async function anyDidContractKeyWrong(credentials: any) {
             const didContractAddress = value.issuer.id.split(':')[2];
             const holderKey = value.proof.holder;
             const sha3Key = getSha3Key(holderKey);
-            // const web3 = new Web3('https://api.didux.network/');
             const keyManagerContract = new config.web3.eth.Contract(
                 ClaimHolder.abi,
                 didContractAddress

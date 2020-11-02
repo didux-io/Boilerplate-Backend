@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { User } from '../db/models/user';
-import * as jwt_decode from 'jwt-decode';
 import { getJWTToken } from '../utils/token-utils';
+import jwt_decode from "jwt-decode";
 import { createVerificationCode, sendVerificationEmail } from '../utils/email-utils';
 import { generatePasswordHash } from '../utils/global-utils';
 

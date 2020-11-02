@@ -1,12 +1,12 @@
 import routes from "../routes/indexVersion";
-import * as express from 'express';
-import * as cors from 'cors';
+import express from 'express';
+import cors from 'cors';
 import swaggerUi = require('swagger-ui-express');
-import swaggerJSDoc = require('swagger-jsdoc');
-import bodyParser = require("body-parser");
+import swaggerJSDoc from 'swagger-jsdoc';
+import bodyParser from 'body-parser';
+import Web3 from 'web3';
+import http from "http";
 import { config } from "../config/config";
-import * as Web3 from '@smilo-platform/web3';
-import * as http from "http";
 import { Sequelize } from 'sequelize-typescript';
 import { User } from "../db/models/user";
 import { setWeb3Provider } from "../utils/web3-utils";

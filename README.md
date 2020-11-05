@@ -60,6 +60,6 @@ git push origin main
 ```
 cd <new project>
 git remote add public git@github.com:didux-io/Boilerplate-Backend.git
-git pull public master # Creates a merge commit
-git push origin master
+git pull public main # Creates a merge commit
+git push origin main
 ```

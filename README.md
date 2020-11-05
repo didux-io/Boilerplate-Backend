@@ -33,3 +33,33 @@ And another terminal window to run the application:
 
 1 = Admin
 100 = User
+
+# Make a private fork
+
+First, create a new (private) repo through the github ui.
+
+## 1. Clone boilerplate
+```
+git clone --bare git@github.com:didux-io/Boilerplate-Backend.git
+cd Boilerplate-Backend.git
+git push --mirror git@github.com:didux-io/<new project>.git
+cd ..
+rm -rf Boilerplate-Backend.git
+```
+
+## 2. Clone new project
+```
+git clone git@github.com:didux-io/<new project>.git
+cd <new project>
+make some changes
+git commit
+git push origin main
+```
+
+## 3. Pull latest boilerplate changes
+```
+cd <new project>
+git remote add public git@github.com:didux-io/Boilerplate-Backend.git
+git pull public master # Creates a merge commit
+git push origin master
+```

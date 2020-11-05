@@ -33,6 +33,10 @@ export class User extends Model<User> {
 
     @AllowNull(true)
     @Column
+    active: boolean;
+
+    @AllowNull(true)
+    @Column
     termsAndPrivacyAccepted: boolean;
 
     @AllowNull(true)

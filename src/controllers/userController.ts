@@ -90,7 +90,8 @@ export async function finishRegistration(req: Request, res: Response, next: Next
             await User.update({
                 username,
                 termsAndPrivacyAccepted,
-                newsLetterAccepted
+                newsLetterAccepted,
+                active: true
             }, {
                 where: { id: jwtDecoded.userId }
             });

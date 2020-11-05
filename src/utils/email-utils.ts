@@ -36,11 +36,11 @@ export async function sendRecoveryAccount(receiver: string, recoveryCode: string
     const sender = config.emailSender;
     const cc = config.emailCc;
 
-    const recoverynUrl = config.portalBackendBaseUrl + '/v1/auth/recoverAccount/' + recoveryCode + '/' + encodeURIComponent(config.emailVerificationRedirectUrl);
+    const recoveryUrl = config.portalBackendBaseUrl + '/v1/auth/recoverAccount/' + recoveryCode + '/' + encodeURIComponent(config.emailVerificationRedirectUrl);
     const cancelRecoveryUrl = config.portalBackendBaseUrl + '/v1/auth/cancelRecoverAccount/' + cancelRecoveryCode + '/' + encodeURIComponent(config.emailVerificationRedirectUrl);
 
     const msgBody = "Klik op de onderstaande link op jouw account te herstellen<br><br>" +
-        "<a href='" + recoverynUrl + "'>Account herstellen</a> <br><br>" +
+        "<a href='" + recoveryUrl + "'>Account herstellen</a> <br><br>" +
         "Klik op de onderstaande link om jouw account herstel te annuleren<br><br>" +
         "<a href='" + cancelRecoveryUrl + "'>Account herstel annuleren</a>"
 

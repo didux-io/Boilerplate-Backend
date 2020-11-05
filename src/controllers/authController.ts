@@ -202,7 +202,8 @@ export async function verifyEmail(req: Request, res: Response, next: NextFunctio
     const user = await User.findOne({where: {emailVerificationCode: verificationCode}});
     if (user) {
         await User.update({
-            emailVerified: true
+            emailVerified: true,
+            active: true
         }, {
             where: { emailVerificationCode: verificationCode }
         });
@@ -228,6 +229,8 @@ export async function authenticateUser(req: Request, res: Response, next: NextFu
                 bcrypt.compare(password, user.password).then((validPassword: boolean) => {
                     if (!validPassword) {
                         res.status(401).send({error: 'Wachtwoord en/of gebruikersnaam is niet correct'});
+                    } else if (user.active != true ) {
+                        res.status(401).send({error: 'Gebruiker niet actief'});
                     } else {
                         res.status(200).send({
                             token: getJWTToken(user)

@@ -1,19 +1,18 @@
 export const config = {
     // Database
-    databaseHost: process.env.DATABASE_HOST || 'DATABASE_HOST',
+    databaseHost: process.env.DATABASE_HOST || 'localhost',
     databasePort: parseInt(process.env.DATABASE_PORT) || 5432,
-    database: process.env.DATABASE || 'DATABASE',
-    databaseUser: process.env.DATABASE_USER || 'DATABASE_USER',
-    databasePassword: process.env.DATABASE_PASSWORD || 'DATABASE_PASSWORD',
+    database: process.env.DATABASE || 'DB_NAME',
+    databaseUser: process.env.DATABASE_USER || 'DB_USER',
+    databasePassword: process.env.DATABASE_PASSWORD || 'DB_PASSWORD',
 
     // Web3
-    web3Host: process.env.WEB3_HOST || 'https://api-eu.didux.network',
+    web3Host: process.env.WEB3_HOST || 'https://api.didux.network',
     web3: null,
 
     // Auth
     jwtValidityInSeconds: 86400,
-    customer: process.env.CUSTOMER || 'ProofMe.ID',
-    authWsUrl: '',
+    authWsUrl: process.env.AUTH_WS_URL ||'ws://10.1.17.52:4015',
 
     // WebRTC
     webRtcEnabled: true,
@@ -25,16 +24,17 @@ export const config = {
     turnSecret: '',
 
     // Email
-    emailEnabled: true,
+    emailEnabled: false,
     portalBackendBaseUrl: '',
     emailVerificationRedirectUrl: '',
+    emailSubject: '',
     emailCc: '',
     emailSender: '',
     emailUser: '',
     emailAppPassword: '',
 
     // General
-    application_name: '',
+    application_name: process.env.APPLICATION || 'APPLICATION_NAME',
 
     // Account recovery
     accountRecoveryTimeInMinutes: 10

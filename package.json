@@ -43,7 +43,6 @@
 		"fs": "0.0.1-security",
 		"gmail-send": "^1.8.10",
 		"httpheaderprovider": "^0.3.4",
-		"images": "^3.0.2",
 		"jsonwebtoken": "^8.5.1",
 		"jwt-decode": "3.0.0",
 		"nedb": "^1.8.0",
@@ -58,7 +57,7 @@
 		"superagent": "6.1.0",
 		"swagger-jsdoc": "5.0.0",
 		"swagger-ui-express": "^4.1.4",
-		"typescript": "^3.3.3",
+		"typescript": "3.9.7",
 		"uuidv4": "^6.0.8",
 		"web3": "1.2.5",
 		"ws": "^7.3.1"

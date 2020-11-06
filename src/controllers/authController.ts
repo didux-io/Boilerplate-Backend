@@ -247,14 +247,6 @@ export async function authenticateUser(req: Request, res: Response, next: NextFu
     }
 }
 
-export async function getConfig(req: Request, res: Response, next: NextFunction): Promise<void> {
-    res.status(200).send({
-        authWsUrl: config.authWsUrl,
-        emailEnabled: config.emailEnabled,
-        webRtcEnabled: config.webRtcEnabled
-    });
-}
-
 export async function recoverAccount(req: Request, res: Response, next: NextFunction): Promise<void> {
     const recoveryCode = req.params.recoveryCode;
     const redirectUrl = req.params.redirectUrl;

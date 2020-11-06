@@ -40,7 +40,7 @@ const swaggerDocumentOptions = {
 
 app.use(cors({ credentials: true, origin: true }));
 app.use(bodyParser.json({ limit: '50MB' }));
-app.use('/documentation', swaggerUi.serve, swaggerUi.setup(swaggerSpec, swaggerDocumentOptions));
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerSpec, swaggerDocumentOptions));
 app.use("/", routes);
 
 const server = http.createServer(app)
@@ -72,7 +72,7 @@ function startServer() {
     sequelize.addModels([User]);
     sequelize.sync().then(() => {
         server.listen(port, "0.0.0.0", () => {
-            console.log(`${applicationTitle} is running on port ${port}`);
+            console.log(`${applicationTitle} is running on port ${port} - http://localhost:${port}/doc`);
         });
     });
 }

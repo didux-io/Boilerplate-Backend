@@ -14,12 +14,14 @@ import { SignalingServer } from "@proofmeid/webrtc";
 
 const app = express();
 const applicationTitle = config.application_name;
+const applicationDescription = config.application_description;
 const port = parseInt(process.env.PORT || '4015');
 const swaggerSpec = swaggerJSDoc({
     swaggerDefinition: {
         info: {
             title: applicationTitle,
-            version: '1.0.0'
+            version: '1.0.0',
+            description: applicationDescription
         },
         basePath: '/v1',
         securityDefinitions: {
@@ -35,7 +37,8 @@ const swaggerSpec = swaggerJSDoc({
     apis: ["**/*.ts"],
 });
 const swaggerDocumentOptions = {
-    // customCss: '.swagger-ui .scheme-container { display: none; }'
+    customCss: '.topbar  { display: none; }'
+    // .swagger-ui .scheme-container { display: none; }
 };
 
 app.use(cors({ credentials: true, origin: true }));

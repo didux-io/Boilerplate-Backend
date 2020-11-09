@@ -7,19 +7,29 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-push:
+  sonarQubeTrigger:
+    name: SonarQube Trigger
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [10.x]
     steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - run: npm run build --if-present
+      - uses: actions/checkout@master
+      - name: SonarQube Scan
+        uses: kitabisa/sonarqube-action@master
+        with:
+          host: ${{ secrets.SONARQUBE_HOST }}
+          login: ${{ secrets.SONARQUBE_TOKEN }}
+#  build-and-push:
+#    runs-on: ubuntu-latest
+#    strategy:
+#      matrix:
+#        node-version: [10.x]
+#    steps:
+#    - uses: actions/checkout@v2
+#    - name: Use Node.js ${{ matrix.node-version }}
+#      uses: actions/setup-node@v1
+#      with:
+#        node-version: ${{ matrix.node-version }}
+#    - run: npm ci
+#    - run: npm run build --if-present
 #    - uses: kciter/aws-ecr-action@v1
 #      with:
 #        access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -45,7 +55,7 @@ jobs:
 #          job: "AuthenticationService"
   slack:
     name: Slack
-    needs: build-and-push # set needs only last job except this job
+#    needs: build-and-push # set needs only last job except this job
     runs-on: ubuntu-latest
     steps:
       - uses: 8398a7/action-slack@v3

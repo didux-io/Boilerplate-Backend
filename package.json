@@ -6,7 +6,7 @@
 	"scripts": {
 		"prebuild": "node prebuild.js",
 		"start": "nodemon ./build/main/index.js",
-		"build": "tsc",
+		"build": "tsc -p .",
 		"watch": "tsc -w"
 	},
 	"repository": {

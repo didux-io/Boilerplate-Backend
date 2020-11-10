@@ -20,11 +20,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm run test
-    - name: Find and Replace
-      uses: jacobtomlinson/gha-find-replace@master
-      with:
-        find: "/home/runner/work/Boilerplate-Backend/Boilerplate-Backend"
-        replace: "/github/workspace/"
+    - run: ls -sf /home/runner/work/Boilerplate-Backend/Boilerplate-Backend .
     - run: ls -al ./coverage
     - run: cat ./coverage/jest-report.xml
     - name: SonarQube Scan

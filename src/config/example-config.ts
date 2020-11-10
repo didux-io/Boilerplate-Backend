@@ -12,7 +12,7 @@ export const config = {
 
     // Auth
     jwtValidityInSeconds: 86400,
-    authWsUrl: process.env.AUTH_WS_URL || "ws://10.1.17.52:4015",
+    authWsUrl: process.env.AUTH_WS_URL || "ws://localhost:4015",
 
     // WebRTC
     webRtcEnabled: true,
@@ -25,7 +25,7 @@ export const config = {
 
     // Email
     emailEnabled: false,
-    portalBackendBaseUrl: "",
+    portalBackendBaseUrl: process.env.BACKEND_URL || "http://localhost:4015",
     emailVerificationRedirectUrl: "",
     emailSubject: "",
     emailCc: "",
@@ -35,7 +35,8 @@ export const config = {
 
     // General
     application_name: process.env.APPLICATION || "APPLICATION_NAME",
+    application_description: "APPLICATION DESCRIPTION",
 
     // Account recovery
     accountRecoveryTimeInMinutes: 10
-};
+}

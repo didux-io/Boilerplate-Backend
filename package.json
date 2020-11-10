@@ -13,7 +13,7 @@
 		"lint:fix": "eslint . --fix --ext .ts",
 		"clean": "rm -rf build coverage",
 		"view:coverage": "serve coverage/lcov-report",
-		"test": "npm run lint:json; cross-env NODE_ENV=test jest --coverage --testTimeout=10000"
+		"test": "cross-env NODE_ENV=test jest --coverage --testTimeout=10000; npm run lint:json"
 	},
 	"repository": {
 		"type": "git",

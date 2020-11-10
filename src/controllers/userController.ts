@@ -1,21 +1,21 @@
-import { Request, Response, NextFunction } from 'express';
-import { User } from '../db/models/user';
-import { getJWTToken } from '../utils/token-utils';
+import { Request, Response, NextFunction } from "express";
+import { User } from "../db/models/user";
+import { getJWTToken } from "../utils/token-utils";
 import jwt_decode from "jwt-decode";
-import { createVerificationCode, sendVerificationEmail } from '../utils/email-utils';
-import { generatePasswordHash } from '../utils/global-utils';
+import { createVerificationCode, sendVerificationEmail } from "../utils/email-utils";
+import { generatePasswordHash } from "../utils/global-utils";
 
 export async function createAccount(req: Request, res: Response, next: NextFunction): Promise<void> {
     const email = req.body.email;
     const password = req.body.password;
     if (!email) {
-        res.status(400).send({ error: 'Missing email' });
+        res.status(400).send({ error: "Missing email" });
     } else if (!password) {
-        res.status(400).send({ error: 'Missing password' });
+        res.status(400).send({ error: "Missing password" });
     } else {
-        let user = await User.findOne({where: { email }});
+        const user = await User.findOne({where: { email }});
         // If the user has any information (setup with mobile WebRTC?)
-        if (!!user) {
+        if (user) {
             // If the user has any information AND did not yet do the verificationCode steps
             if (!user.emailVerificationCode) {
                 const verificationCode = createVerificationCode();
@@ -36,7 +36,7 @@ export async function createAccount(req: Request, res: Response, next: NextFunct
             const verificationCode = createVerificationCode();
             const hashedPassword = await generatePasswordHash(password);
             if (userCount === 0) {
-                console.log('First time adding a user. Automagically an admin');
+                console.log("First time adding a user. Automagically an admin");
                 await User.create({
                     email,
                     password: hashedPassword,
@@ -79,11 +79,11 @@ export async function finishRegistration(req: Request, res: Response, next: Next
     const termsAndPrivacyAccepted = req.body.termsAndPrivacyAccepted;
     const newsLetterAccepted = req.body.newsLetterAccepted;
     if (!username) {
-        res.status(400).send({ error: 'Missing username' });
-    } else if (termsAndPrivacyAccepted === 'undefined') {
-        res.status(400).send({ error: 'Missing termsAndPrivacyAccepted' });
-    } else if (newsLetterAccepted === 'undefined') {
-        res.status(400).send({ error: 'Missing newsLetterAccepted' });
+        res.status(400).send({ error: "Missing username" });
+    } else if (termsAndPrivacyAccepted === "undefined") {
+        res.status(400).send({ error: "Missing termsAndPrivacyAccepted" });
+    } else if (newsLetterAccepted === "undefined") {
+        res.status(400).send({ error: "Missing newsLetterAccepted" });
     } else {
         try {
             const jwtDecoded: any = jwt_decode(req.headers.authorization);

@@ -1,11 +1,11 @@
-import { config } from '../config/config';
-import * as jwt from 'jsonwebtoken';
-import * as fs from 'fs';
-import { User } from '../db/models/user';
+import { config } from "../config/config";
+import * as jwt from "jsonwebtoken";
+import * as fs from "fs";
+import { User } from "../db/models/user";
 
 export function getJWTToken(user: User): string {
-    var privateKey = fs.readFileSync('./jwt-keys/private.pem');
-    var token = jwt.sign({ 
+    const privateKey = fs.readFileSync("./jwt-keys/private.pem");
+    const token = jwt.sign({ 
         publicKey: user.publicKey,
         did: user.did,
         userId: user.id,
@@ -17,9 +17,9 @@ export function getJWTToken(user: User): string {
     }, 
     privateKey, 
     { 
-        algorithm: 'RS256', 
+        algorithm: "RS256", 
         expiresIn: config.jwtValidityInSeconds,
-        audience: 'proofme.id'
+        audience: "proofme.id"
     });
     return token;
 }

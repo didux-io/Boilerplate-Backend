@@ -1,5 +1,5 @@
-import * as jwt from 'jsonwebtoken';
-import { Request } from 'express';
+import * as jwt from "jsonwebtoken";
+import { Request } from "express";
 
 export function getDidAddress(token: string) {
     const decoded = jwt.decode(token, {complete: true});

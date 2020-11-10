@@ -4,10 +4,13 @@
 	"description": "Template Backend",
 	"main": "./build/src/main/index.js",
 	"scripts": {
-		"prebuild": "node prebuild.js",
+		"prebuild": "node prebuild.js; npm run lint",
 		"start": "nodemon ./build/main/index.js",
 		"build": "tsc -p .",
-		"watch": "tsc -w"
+		"watch": "tsc -w",
+		"lint": "eslint . --ext .ts",
+		"lint:fix": "eslint . --fix --ext .ts",
+		"clean": "rm -rf build coverage"
 	},
 	"repository": {
 		"type": "git",
@@ -66,6 +69,10 @@
 		"@types/superagent": "^4.1.1",
 		"@types/swagger-jsdoc": "3.0.2",
 		"@types/swagger-ui-express": "4.1.2",
-		"@types/ws": "^7.2.4"
+		"@types/ws": "^7.2.4",
+		"@typescript-eslint/eslint-plugin": "^4.7.0",
+		"@typescript-eslint/parser": "^4.7.0",
+		"eslint": "^7.13.0",
+		"eslint-plugin-no-loops": "^0.3.0"
 	}
 }

@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from "bcrypt";
 
 export function calculateMinutesDifference(dt2: Date, dt1: Date)  {
     let diff = (dt2.getTime() - dt1.getTime()) / 1000;

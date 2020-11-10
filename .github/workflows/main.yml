@@ -22,6 +22,8 @@ jobs:
     - run: npm run test
     - name: SonarQube Scan
       uses: kitabisa/sonarqube-action@master
+      env:
+        GITHUB_WORKSPACE: .
       with:
         host: ${{ secrets.SONARQUBE_HOST }}
         login: ${{ secrets.SONARQUBE_TOKEN }}

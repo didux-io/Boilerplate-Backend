@@ -1,7 +1,7 @@
 import * as configController from "../../../controllers/configController";
 import { Router } from "express";
 
-const router = Router();
+export const routerConfig = Router();
 
 /**
  * @swagger
@@ -17,6 +17,5 @@ const router = Router();
  *       200:
  *         description: Get the config
  */
-router.get("", configController.getConfig);
+routerConfig.get("", configController.getConfig);
 
-module.exports = router;

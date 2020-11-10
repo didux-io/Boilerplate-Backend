@@ -3,7 +3,7 @@ import { Router } from "express";
 import { checkJwtToken } from "../../../middlewares/jwtMiddleware";
 import { emailConfigEnabled } from "../../../middlewares/emailEnabledMiddleware";
 
-const router = Router();
+export const routerUser = Router();
 
 /**
  * @swagger
@@ -24,7 +24,7 @@ const router = Router();
  *       200:
  *         description: User registered
  */
-router.post("/registrate", emailConfigEnabled, accountController.createAccount);
+routerUser.post("/registrate", emailConfigEnabled, accountController.createAccount);
 
 /**
  * @swagger
@@ -45,7 +45,7 @@ router.post("/registrate", emailConfigEnabled, accountController.createAccount);
  *       200:
  *         description: User registered
  */
-router.post("/finishRegistration", checkJwtToken, accountController.finishRegistration);
+routerUser.post("/finishRegistration", checkJwtToken, accountController.finishRegistration);
 
 /**
  * @swagger
@@ -66,6 +66,4 @@ router.post("/finishRegistration", checkJwtToken, accountController.finishRegist
  *       200:
  *         description: User registered
  */
-router.patch("/:userId", checkJwtToken, accountController.patchUserProfile);
-
-module.exports = router;
+routerUser.patch("/:userId", checkJwtToken, accountController.patchUserProfile);

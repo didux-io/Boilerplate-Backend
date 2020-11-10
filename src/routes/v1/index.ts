@@ -1,14 +1,12 @@
 import { Router } from "express";
+import { routerAuth } from "./auth/calls";
+import { routerConfig } from "./config/calls";
+import { routerUser } from "./user/calls";
 
-const router = Router();
+export const routerV1 = Router();
 
-/* eslint @typescript-eslint/no-var-requires: 1 */
-router.use("/user", require(__dirname + "/user/calls"));
+routerV1.use("/user", routerUser);
 
-/* eslint @typescript-eslint/no-var-requires: 1 */
-router.use("/auth", require(__dirname + "/auth/calls"));
+routerV1.use("/auth", routerAuth);
 
-/* eslint @typescript-eslint/no-var-requires: 1 */
-router.use("/config", require(__dirname + "/config/calls"));
- 
-module.exports = router;
+routerV1.use("/config", routerConfig);

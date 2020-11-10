@@ -31,7 +31,7 @@
 		"clearMocks": true,
 		"testResultsProcessor": "jest-sonar-reporter",
 		"roots": [
-			"<rootDir>/src"
+			"src"
 		],
 		"coveragePathIgnorePatterns": [
 			"/node_modules/"
@@ -50,6 +50,11 @@
 			"text",
 			"clover"
 		]
+	},
+	"jestSonar": {
+		"reportPath": "coverage",
+		"reportFile": "jest-report.xml",
+		"indent": 4
 	},
 	"dependencies": {
 		"@proofmeid/webrtc": "0.0.4",

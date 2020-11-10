@@ -20,14 +20,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm run test
-    - name: SonarQube Scan
-      uses: kitabisa/sonarqube-action@master
-      env:
-        GITHUB_WORKSPACE: .
-      with:
-        host: ${{ secrets.SONARQUBE_HOST }}
-        login: ${{ secrets.SONARQUBE_TOKEN }}
-        projectBaseDir: .
+    - run: npm run sonar -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
+#      with:
+#        host: ${{ secrets.SONARQUBE_HOST }}
+#        login: ${{ secrets.SONARQUBE_TOKEN }}
 #  build-and-push:
 #    runs-on: ubuntu-latest
 #    strategy:

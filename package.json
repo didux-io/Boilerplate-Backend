@@ -13,6 +13,7 @@
 		"lint:fix": "eslint . --fix --ext .ts",
 		"clean": "rm -rf build coverage",
 		"view:coverage": "serve coverage/lcov-report",
+		"sonar": "node_modules/sonar-scanner/bin/sonar-scanner",
 		"test": "cross-env NODE_ENV=test jest --coverage --testTimeout=10000; npm run lint:json"
 	},
 	"repository": {
@@ -113,6 +114,7 @@
 		"jest-sonar-reporter": "^2.0.0",
 		"mocha": "^8.2.1",
 		"serve": "^11.3.2",
+		"sonar-scanner": "^3.1.0",
 		"supertest": "^6.0.1",
 		"ts-jest": "^26.4.4"
 	}

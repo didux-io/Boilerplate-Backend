@@ -20,14 +20,12 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm run test
-    - run: ls -sf /home/runner/work/Boilerplate-Backend/Boilerplate-Backend .
-    - run: ls -al ./coverage
-    - run: cat ./coverage/jest-report.xml
     - name: SonarQube Scan
       uses: kitabisa/sonarqube-action@master
       with:
         host: ${{ secrets.SONARQUBE_HOST }}
         login: ${{ secrets.SONARQUBE_TOKEN }}
+        projectBaseDir: .
 #  build-and-push:
 #    runs-on: ubuntu-latest
 #    strategy:

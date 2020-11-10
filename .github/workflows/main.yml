@@ -20,7 +20,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
     - run: npm run test
-    - run: npm run sonar -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
+    - run: npm run sonar -- -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
 #      with:
 #        host: ${{ secrets.SONARQUBE_HOST }}
 #        login: ${{ secrets.SONARQUBE_TOKEN }}

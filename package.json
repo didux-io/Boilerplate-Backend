@@ -9,10 +9,11 @@
 		"build": "tsc -p .",
 		"watch": "tsc -w",
 		"lint": "eslint . --ext .ts",
+		"lint:json": "eslint . --ext .ts -f json -o coverage/eslint.json",
 		"lint:fix": "eslint . --fix --ext .ts",
 		"clean": "rm -rf build coverage",
 		"view:coverage": "serve coverage/lcov-report",
-		"test": "cross-env NODE_ENV=test jest --coverage --testTimeout=10000"
+		"test": "npm run lint:json; cross-env NODE_ENV=test jest --coverage --testTimeout=10000"
 	},
 	"repository": {
 		"type": "git",
@@ -27,7 +28,9 @@
 	"jest": {
 		"preset": "ts-jest",
 		"testEnvironment": "node",
-		"roots": ["<rootDir>/src"],
+		"roots": [
+			"<rootDir>/src"
+		],
 		"transform": {
 			"^.+\\.tsx?$": "ts-jest"
 		},

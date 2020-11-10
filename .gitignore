@@ -1,5 +1,5 @@
 node_modules
-coverage
+#coverage
 build
 !jwt-keys
 jwt-keys/*
@@ -7,6 +7,6 @@ jwt-keys/*
 data
 .DS_Store
 posters/*.png
-test-report.xml
+#test-report.xml
 
 src/config/config.ts

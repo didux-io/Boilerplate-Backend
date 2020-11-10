@@ -7,5 +7,6 @@ jwt-keys/*
 data
 .DS_Store
 posters/*.png
+.scannerwork
 
 src/config/config.ts

@@ -13,7 +13,7 @@
 		"lint:fix": "eslint . --fix --ext .ts",
 		"clean": "rm -rf build coverage",
 		"view:coverage": "serve coverage/lcov-report",
-		"sonar": "node_modules/sonar-scanner/bin/sonar-scanner",
+		"sonar": "sonar-scanner",
 		"test": "cross-env NODE_ENV=test jest --coverage --testTimeout=10000; npm run lint:json"
 	},
 	"repository": {

@@ -10,7 +10,9 @@
 		"watch": "tsc -w",
 		"lint": "eslint . --ext .ts",
 		"lint:fix": "eslint . --fix --ext .ts",
-		"clean": "rm -rf build coverage"
+		"clean": "rm -rf build coverage",
+		"view:coverage": "serve coverage/lcov-report",
+		"test": "cross-env NODE_ENV=test jest --coverage --testTimeout=10000"
 	},
 	"repository": {
 		"type": "git",
@@ -22,6 +24,31 @@
 	"homepage": "https://github.com/Proofme-id/Proofme.id-AuthService",
 	"author": "Didux.io",
 	"license": "GPL-3.0-only",
+	"jest": {
+		"preset": "ts-jest",
+		"testEnvironment": "node",
+		"roots": ["<rootDir>/src"],
+		"transform": {
+			"^.+\\.tsx?$": "ts-jest"
+		},
+		"coveragePathIgnorePatterns": [
+			"/node_modules/"
+		],
+		"coverageThreshold": {
+			"global": {
+				"branches": 80,
+				"functions": 80,
+				"lines": 80,
+				"statements": 80
+			}
+		},
+		"coverageReporters": [
+			"json",
+			"lcov",
+			"text",
+			"clover"
+		]
+	},
 	"dependencies": {
 		"@proofmeid/webrtc": "0.0.4",
 		"@types/bcrypt": "^3.0.0",
@@ -66,13 +93,21 @@
 		"ws": "^7.3.1"
 	},
 	"devDependencies": {
+		"@types/jest": "^26.0.15",
 		"@types/superagent": "^4.1.1",
+		"@types/supertest": "^2.0.10",
 		"@types/swagger-jsdoc": "3.0.2",
 		"@types/swagger-ui-express": "4.1.2",
 		"@types/ws": "^7.2.4",
 		"@typescript-eslint/eslint-plugin": "^4.7.0",
 		"@typescript-eslint/parser": "^4.7.0",
+		"cross-env": "^7.0.2",
 		"eslint": "^7.13.0",
-		"eslint-plugin-no-loops": "^0.3.0"
+		"eslint-plugin-no-loops": "^0.3.0",
+		"jest": "^26.6.3",
+		"mocha": "^8.2.1",
+		"serve": "^11.3.2",
+		"supertest": "^6.0.1",
+		"ts-jest": "^26.4.4"
 	}
 }

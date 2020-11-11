@@ -5,7 +5,7 @@ import jwt_decode from "jwt-decode";
 import { createVerificationCode, sendVerificationEmail } from "../utils/email-utils";
 import { generatePasswordHash } from "../utils/global-utils";
 
-export async function createAccount(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function createAccount(req: Request, res: Response): Promise<void> {
     const email = req.body.email;
     const password = req.body.password;
     if (!email) {
@@ -57,7 +57,7 @@ export async function createAccount(req: Request, res: Response, next: NextFunct
     }
 }
 
-export async function patchUserProfile(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function patchUserProfile(req: Request, res: Response): Promise<void> {
     try {
         const jwtDecoded: any = jwt_decode(req.headers.authorization);
         await User.update({
@@ -74,7 +74,7 @@ export async function patchUserProfile(req: Request, res: Response, next: NextFu
     }
 }
 
-export async function finishRegistration(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function finishRegistration(req: Request, res: Response): Promise<void> {
     const username = req.body.username;
     const termsAndPrivacyAccepted = req.body.termsAndPrivacyAccepted;
     const newsLetterAccepted = req.body.newsLetterAccepted;

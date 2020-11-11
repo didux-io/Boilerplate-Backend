@@ -11,7 +11,7 @@ import { createRecoveryCancelCode, createRecoveryCode, sendRecoveryAccount } fro
 import { calculateMinutesDifference } from "../utils/global-utils";
 import { Op } from "sequelize";
 
-export async function getAuthChallenge(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function getAuthChallenge(req: Request, res: Response): Promise<void> {
     try {
         const publicKey = req.params.publicKey;
         let did = req.params.did;
@@ -51,7 +51,7 @@ export async function getAuthChallenge(req: Request, res: Response, next: NextFu
     }
 }
 
-export async function validateSignature(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function validateSignature(req: Request, res: Response): Promise<void> {
     const signature = req.body.signature;
     const publicKey = req.body.publicKey;
     let did = req.body.did;
@@ -185,7 +185,7 @@ export async function validateSignature(req: Request, res: Response, next: NextF
 export async function checkToken(req: Request, res: Response, next: NextFunction): Promise<void> {
     const token = req.headers.authorization;
     const cert = fs.readFileSync("./jwt-keys/public.pem");
-    jwt.verify(token, cert, (err: any) => {
+    jwt.verify(token, cert, (err: jwt.VerifyErrors) => {
         if (err) {
             res.status(400).send({ error: "JWT_INVALID" });
             next("JWT not valid.");
@@ -196,7 +196,7 @@ export async function checkToken(req: Request, res: Response, next: NextFunction
     });
 }
 
-export async function verifyEmail(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function verifyEmail(req: Request, res: Response): Promise<void> {
     const verificationCode = req.params.verificationCode;
     const loginRedirect = req.params.loginRedirect;
     const user = await User.findOne({where: {emailVerificationCode: verificationCode}});
@@ -213,7 +213,7 @@ export async function verifyEmail(req: Request, res: Response, next: NextFunctio
     }
 }
 
-export async function authenticateUser(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function authenticateUser(req: Request, res: Response): Promise<void> {
     const email = req.body.email;
     const password = req.body.password;
     if (!email) {
@@ -247,7 +247,7 @@ export async function authenticateUser(req: Request, res: Response, next: NextFu
     }
 }
 
-export async function recoverAccount(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function recoverAccount(req: Request, res: Response): Promise<void> {
     const recoveryCode = req.params.recoveryCode;
     const redirectUrl = req.params.redirectUrl;
 
@@ -277,7 +277,7 @@ export async function recoverAccount(req: Request, res: Response, next: NextFunc
     }
 }
 
-export async function cancelRecoverAccount(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function cancelRecoverAccount(req: Request, res: Response): Promise<void> {
     const cancelRecoveryCode = req.params.cancelRecoveryCode;
     const redirectUrl = req.params.redirectUrl;
     const user = await User.findOne({where: { accountRecoveryCancelCode: cancelRecoveryCode }});

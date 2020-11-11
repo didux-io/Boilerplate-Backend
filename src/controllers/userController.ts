@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import { User } from "../db/models/user";
 import { getJWTToken } from "../utils/token-utils";
 import jwt_decode from "jwt-decode";

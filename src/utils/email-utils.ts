@@ -1,6 +1,6 @@
 import { config } from "../config/config";
 
-export async function sendVerificationEmail(receiver: string, verificationCode: string) {
+export async function sendVerificationEmail(receiver: string, verificationCode: string): Promise<void> {
     const user = config.emailUser;
     const password = config.emailAppPassword;
     const sender = config.emailSender;
@@ -25,13 +25,13 @@ export async function sendVerificationEmail(receiver: string, verificationCode: 
         html: message                            // HTML
     });
 
-    send({}, function (err: any, res: any, full: any) {
+    send({}, function (err: any, res: any) {
         if (err) return console.log("* sendEmail() callback returned: err:", err);
         console.log("* sendEmail() callback returned: res:", res);
     });
 }
 
-export async function sendRecoveryAccount(receiver: string, recoveryCode: string, cancelRecoveryCode: string) {
+export async function sendRecoveryAccount(receiver: string, recoveryCode: string, cancelRecoveryCode: string): Promise<void> {
     const user = config.emailUser;
     const password = config.emailAppPassword;
     const sender = config.emailSender;
@@ -59,13 +59,13 @@ export async function sendRecoveryAccount(receiver: string, recoveryCode: string
         html: message                            // HTML
     });
 
-    send({}, function (err: any, res: any, full: any) {
+    send({}, function (err: any, res: any) {
         if (err) return console.log("* sendEmail() callback returned: err:", err);
         console.log("* sendEmail() callback returned: res:", res);
     });
 }
 
-export function createVerificationCode() {
+export function createVerificationCode(): string {
     /* eslint @typescript-eslint/no-var-requires: 1 */
     const cryptoRandomString = require("crypto-random-string");
     return cryptoRandomString({length: 32, type: "url-safe"});
@@ -74,7 +74,7 @@ export function createVerificationCode() {
 /**
  * Yes it's the same as the verification code but maybe we want to make it different somehow, keep the functions apart
  */
-export function createRecoveryCode() {
+export function createRecoveryCode(): string {
     /* eslint @typescript-eslint/no-var-requires: 1 */
     const cryptoRandomString = require("crypto-random-string");
     return cryptoRandomString({length: 32, type: "url-safe"});
@@ -83,7 +83,7 @@ export function createRecoveryCode() {
 /**
  * Yes it's the same as the verification code but maybe we want to make it different somehow, keep the functions apart
  */
-export function createRecoveryCancelCode() {
+export function createRecoveryCancelCode(): string {
     /* eslint @typescript-eslint/no-var-requires: 1 */
     const cryptoRandomString = require("crypto-random-string");
     return cryptoRandomString({length: 32, type: "url-safe"});

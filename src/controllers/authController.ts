@@ -89,7 +89,7 @@ export async function validateSignature(req: Request, res: Response): Promise<vo
         const validCredentials = await isValidCredentials(credentials);
         if (validCredentials) {
             // Email validation
-            if (credentials && credentials.credential && credentials.credential.EMAIL) {
+            if (credentials.credential && credentials.credential.EMAIL) {
                 const email = credentials.credential.EMAIL.credentialSubject.credential.value;
                 const userCount = await User.count();
                 // If there are no users make the first one admin

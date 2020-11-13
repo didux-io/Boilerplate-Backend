@@ -1,4 +1,4 @@
-import {Table, Column, Model, CreatedAt, UpdatedAt, AllowNull, ForeignKey, Unique} from 'sequelize-typescript';
+import {Table, Column, Model, CreatedAt, UpdatedAt, AllowNull, Unique} from "sequelize-typescript";
 
 @Table
 export class User extends Model<User> {

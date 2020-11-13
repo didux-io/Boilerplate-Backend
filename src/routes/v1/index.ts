@@ -1,11 +1,16 @@
 import { Router } from "express";
+import { routerAuth } from "./auth/calls";
+import { routerConfig } from "./config/calls";
+import { routerEmail } from "./email/calls";
+import { routerUser } from "./user/calls";
 
-const router = Router();
+export const routerV1 = Router();
 
-router.use('/user', require(__dirname + '/user/calls'));
-router.use('/auth', require(__dirname + '/auth/calls'));
-router.use('/config', require(__dirname + '/config/calls'));
-router.use('/email', require(__dirname + '/email/calls'));
- 
- 
-module.exports = router;
+routerV1.use("/user", routerUser);
+
+routerV1.use("/auth", routerAuth);
+
+routerV1.use("/config", routerConfig);
+
+routerV1.use("/email", routerEmail);
+

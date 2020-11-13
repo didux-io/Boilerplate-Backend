@@ -1,10 +1,10 @@
-import * as authChallengeController from '../../../controllers/authController';
-import { Router } from 'express';
-import { checkJwtToken } from '../../../middlewares/jwtMiddleware';
-import { emailConfigEnabled } from '../../../middlewares/emailEnabledMiddleware';
-import { webRtcConfigEnabled } from '../../../middlewares/webRtcEnabledMiddleware';
+import * as authChallengeController from "../../../controllers/authController";
+import { Router } from "express";
+import { checkJwtToken } from "../../../middlewares/jwtMiddleware";
+import { emailConfigEnabled } from "../../../middlewares/emailEnabledMiddleware";
+import { webRtcConfigEnabled } from "../../../middlewares/webRtcEnabledMiddleware";
 
-const router = Router();
+export const routerAuth = Router();
 
 /**
  * @swagger
@@ -22,15 +22,15 @@ const router = Router();
  *       200:
  *         description: an access token to objects
  */
-router.get('/check', checkJwtToken, authChallengeController.checkToken);
+routerAuth.get("/check", checkJwtToken, authChallengeController.checkToken);
 
-router.get('/recoverAccount/:recoveryCode/:redirectUrl', authChallengeController.recoverAccount);
+routerAuth.get("/recoverAccount/:recoveryCode/:redirectUrl", authChallengeController.recoverAccount);
 
-router.get('/cancelRecoverAccount/:cancelRecoveryCode/:redirectUrl', authChallengeController.cancelRecoverAccount);
+routerAuth.get("/cancelRecoverAccount/:cancelRecoveryCode/:redirectUrl", authChallengeController.cancelRecoverAccount);
 
-router.get('/verifyemail/:verificationCode/:loginRedirect', emailConfigEnabled, authChallengeController.verifyEmail);
+routerAuth.get("/verifyemail/:verificationCode/:loginRedirect", emailConfigEnabled, authChallengeController.verifyEmail);
 
-router.post('/authemail', emailConfigEnabled, authChallengeController.authenticateUser);
+routerAuth.post("/authemail", emailConfigEnabled, authChallengeController.authenticateUser);
 
 /**
  * @swagger
@@ -55,7 +55,7 @@ router.post('/authemail', emailConfigEnabled, authChallengeController.authentica
  *       200:
  *         description: a challenge to sign
  */
-router.get('/:publicKey/:did', webRtcConfigEnabled, authChallengeController.getAuthChallenge);
+routerAuth.get("/:publicKey/:did", webRtcConfigEnabled, authChallengeController.getAuthChallenge);
 
 /**
  * @swagger
@@ -76,7 +76,7 @@ router.get('/:publicKey/:did', webRtcConfigEnabled, authChallengeController.getA
  *       200:
  *         description: a challenge to sign
  */
-router.get('/:publicKey', webRtcConfigEnabled, authChallengeController.getAuthChallenge);
+routerAuth.get("/:publicKey", webRtcConfigEnabled, authChallengeController.getAuthChallenge);
 
 /**
  * @swagger
@@ -105,7 +105,7 @@ router.get('/:publicKey', webRtcConfigEnabled, authChallengeController.getAuthCh
  *       200:
  *         description: Get the credentials
  */
-router.post('/:publicKey/:did', webRtcConfigEnabled, authChallengeController.validateSignature);
+routerAuth.post("/:publicKey/:did", webRtcConfigEnabled, authChallengeController.validateSignature);
 
 /**
  * @swagger
@@ -130,6 +130,4 @@ router.post('/:publicKey/:did', webRtcConfigEnabled, authChallengeController.val
  *       200:
  *         description: Get the credentials
  */
-router.post('/:publicKey', webRtcConfigEnabled, authChallengeController.validateSignature);
-
-module.exports = router;
+routerAuth.post("/:publicKey", webRtcConfigEnabled, authChallengeController.validateSignature);

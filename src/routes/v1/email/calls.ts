@@ -4,8 +4,6 @@ import { checkJwtToken } from '../../../middlewares/jwtMiddleware';
 import { emailConfigEnabled } from '../../../middlewares/emailEnabledMiddleware';
 import { isAdminJwtToken } from "../../../middlewares/isAdminMiddleware";
 
-const router = Router();
+export const routerEmail = Router();
 
-router.post('/contact', emailController.sendContactEmail);
-
-module.exports = router;
+routerEmail.post('/contact', emailController.sendContactEmail);

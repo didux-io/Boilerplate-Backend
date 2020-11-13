@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction } from 'express';
-import { config } from '../config/config';
+import { Request, Response, NextFunction } from "express";
+import { config } from "../config/config";
 
-export function webRtcConfigEnabled(req: Request, res: Response, next: NextFunction) {
+export function webRtcConfigEnabled(req: Request, res: Response, next: NextFunction): void {
     if (!config.webRtcEnabled) {
-        res.status(400).send({error: 'WEBRTC_CONF_DISABLED'});
-        next('WEBRTC configuration disabled.');
+        res.status(400).send({error: "WEBRTC_CONF_DISABLED"});
+        next("WEBRTC configuration disabled.");
     } else {
         next();
     }

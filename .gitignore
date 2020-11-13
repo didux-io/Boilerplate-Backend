@@ -1,4 +1,5 @@
 node_modules
+coverage
 build
 !jwt-keys
 jwt-keys/*
@@ -6,5 +7,6 @@ jwt-keys/*
 data
 .DS_Store
 posters/*.png
+.scannerwork
 
 src/config/config.ts

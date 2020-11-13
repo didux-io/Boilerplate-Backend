@@ -4,24 +4,24 @@ import { ClaimHolder } from "../smartcontracts/ClaimHolder";
 import { abi } from "../smartcontracts/identity";
 import { calculateMinutesDifference } from "./global-utils";
 
-export async function setWeb3Provider() {
-    console.log("Set web3 provider: " + config.web3Host);
+export async function setWeb3Provider(): Promise<void> {
+    console.log("info", "Set web3 provider: " + config.web3Host);
     config.web3.setProvider(config.web3Host);
 }
 
-export function recoverAddressFromSignature(message: string, signature: string) {
+export function recoverAddressFromSignature(message: string, signature: string): string {
     return config.web3.eth.accounts.recover(message, signature);
 }
 
-export async function checkKeyForDid(contractAddress: string, publicKey: string) {
+export async function checkKeyForDid(contractAddress: string, publicKey: string): Promise<boolean> {
     try  {
-        let contract = new config.web3.eth.Contract(abi, contractAddress);
-        let shaAddress = config.web3.utils.sha3(publicKey, {encoding:"hex"});
+        const contract = new config.web3.eth.Contract(abi, contractAddress);
+        const shaAddress = config.web3.utils.sha3(publicKey, {encoding:"hex"});
         return await contract.methods.keyHasPurpose(shaAddress, 2).call().then(
             function(result) {
                 return result;
             }).catch(
-            function(err: any) {
+            function() {
                 console.log("Node response: Could not find contract");
                 return false;
             }
@@ -32,11 +32,11 @@ export async function checkKeyForDid(contractAddress: string, publicKey: string)
     }
 }
 
-function anyUserCredentialSignatureWrong(credentials: any, recoveredAddress: string) {
+function anyUserCredentialSignatureWrong(credentials: any, recoveredAddress: string): boolean {
     for (const key in credentials) {
-        if (credentials.hasOwnProperty(key)) {
+        if (Object.prototype.hasOwnProperty.call(credentials, key)) {
             const value = credentials[key];
-            const credentialHolderKey = value.id.split(':')[2];
+            const credentialHolderKey = value.id.split(":")[2];
             if (credentialHolderKey !== recoveredAddress) {
                 return false;
             }
@@ -47,7 +47,7 @@ function anyUserCredentialSignatureWrong(credentials: any, recoveredAddress: str
 
 function anyServerCredentialSignatureWrong(credentials: any) {
     for (const key in credentials) {
-        if (credentials.hasOwnProperty(key)) {
+        if (Object.prototype.hasOwnProperty.call(credentials, key)) {
             const value = credentials[key];
             const serverSignature = value.proof.signature;
             const credentialServerKey = value.proof.holder;
@@ -77,7 +77,7 @@ function knownAddressesContains(list: any[], sha3Key: string, didContractAddress
 async function getKeyPurpose(keyManagerContract: any, key: string): Promise<string> {
     // Get Events
     if (keyManagerContract.options.address === null) {
-        return Promise.resolve('-1');
+        return Promise.resolve("-1");
     } else {
         return await keyManagerContract.methods.getKeyPurpose(key).call();
     }
@@ -86,9 +86,9 @@ async function getKeyPurpose(keyManagerContract: any, key: string): Promise<stri
 async function anyDidContractKeyWrong(credentials: any) {
     const knownAddresses = [];
     for (const key in credentials) {
-        if (credentials.hasOwnProperty(key)) {
+        if (Object.prototype.hasOwnProperty.call(credentials, key)) {
             const value = credentials[key];
-            const didContractAddress = value.issuer.id.split(':')[2];
+            const didContractAddress = value.issuer.id.split(":")[2];
             const holderKey = value.proof.holder;
             const sha3Key = getSha3Key(holderKey);
             const keyManagerContract = new config.web3.eth.Contract(
@@ -132,22 +132,22 @@ export async function isValidCredentials(credentials: any): Promise<boolean> {
                     // So all good, check identification
                     return true;
                 } else {
-                    console.error('4. ERROR isValidCredentials');
+                    console.error("4. ERROR isValidCredentials");
                     // Vertrouwde ondertekenaar klopt niet
                     return false;
                 }
             } else {
-                console.error('3. ERROR isValidCredentials');
+                console.error("3. ERROR isValidCredentials");
                 // Server handtekening klopt niet
                 return false;
             }
         } else {
-            console.error('2. ERROR isValidCredentials');
+            console.error("2. ERROR isValidCredentials");
             // Handtekening klopt niet
             return false;
         }
     } else {
-        console.error('1. ERROR isValidCredentials');
+        console.error("1. ERROR isValidCredentials");
         // Datum klopt niet
         return false;
     }

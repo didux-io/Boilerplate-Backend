@@ -32,7 +32,7 @@ export async function checkKeyForDid(contractAddress: string, publicKey: string)
     }
 }
 
-function anyUserCredentialSignatureWrong(credentials: any, recoveredAddress: string): boolean {
+function anyUserCredentialSignatureWrong(credentials, recoveredAddress: string): boolean {
     for (const key in credentials) {
         if (Object.prototype.hasOwnProperty.call(credentials, key)) {
             const value = credentials[key];
@@ -45,7 +45,7 @@ function anyUserCredentialSignatureWrong(credentials: any, recoveredAddress: str
     return true;
 }
 
-function anyServerCredentialSignatureWrong(credentials: any) {
+function anyServerCredentialSignatureWrong(credentials) {
     for (const key in credentials) {
         if (Object.prototype.hasOwnProperty.call(credentials, key)) {
             const value = credentials[key];
@@ -66,7 +66,7 @@ function getSha3Key(key: string) {
     return config.web3.utils.keccak256(key);
 }
 
-function knownAddressesContains(list: any[], sha3Key: string, didContractAddress: string) {
+function knownAddressesContains(list, sha3Key: string, didContractAddress: string) {
     for (const listItem of list) {
         if (listItem.sha3Key === sha3Key && listItem.didContractAddress === didContractAddress) {
             return true;
@@ -74,7 +74,7 @@ function knownAddressesContains(list: any[], sha3Key: string, didContractAddress
     }
 }
 
-async function getKeyPurpose(keyManagerContract: any, key: string): Promise<string> {
+async function getKeyPurpose(keyManagerContract, key: string): Promise<string> {
     // Get Events
     if (keyManagerContract.options.address === null) {
         return Promise.resolve("-1");
@@ -83,7 +83,7 @@ async function getKeyPurpose(keyManagerContract: any, key: string): Promise<stri
     }
 }
 
-async function anyDidContractKeyWrong(credentials: any) {
+async function anyDidContractKeyWrong(credentials) {
     const knownAddresses = [];
     for (const key in credentials) {
         if (Object.prototype.hasOwnProperty.call(credentials, key)) {
@@ -107,25 +107,20 @@ async function anyDidContractKeyWrong(credentials: any) {
     return true;
 }
 
-export async function isValidCredentials(credentials: any): Promise<boolean> {
+export async function isValidCredentials(credentials: { signedOn: string | number | Date; credential: string; proof: { signature: string; }; }): Promise<boolean> {
     const now = new Date();
     const then =  new Date(credentials.signedOn);
     const minutesDifference = calculateMinutesDifference(now, then);
     // Check if the timestamp is in the time range
     if (minutesDifference <= 5) {
-        // tslint:disable-next-line: max-line-length
         const recoveredAddress = config.web3.eth.accounts.recover(JSON.stringify(credentials.credential), credentials.proof.signature);
-        // console.log('credentials.credential:', credentials.credential);
-        // console.log('recoveredAddress:', recoveredAddress);
         const userSignatureResult = anyUserCredentialSignatureWrong(credentials.credential, recoveredAddress);
         // Check if the user (Identity App) did sign it correct
         if (userSignatureResult) {
-            // tslint:disable-next-line: max-line-length
             // Check if the sent credentials were provided by the did of the credential (check the signature of each credential)
             const issuerSignaturesResult = anyServerCredentialSignatureWrong(credentials.credential);
             // console.log('issuerSignaturesResult:', issuerSignaturesResult);
             if (issuerSignaturesResult) {
-                // console.log('Identify credentials:', credentials);
                 // Check every credential DID contract if the holder belongs to that DID
                 const didContractKeyResult = await anyDidContractKeyWrong(credentials.credential);
                 if (didContractKeyResult) {

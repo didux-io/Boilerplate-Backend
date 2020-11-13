@@ -1,4 +1,4 @@
-# Didux.io Template Backend
+# Didux.io Boilerplate Backend
 
 To run this application you need to have npm installed.
 

@@ -1,4 +1,6 @@
 import { config } from "../config/config";
+import gmail from "gmail-send";
+import crypto from "crypto-random-string";
 
 export async function sendVerificationEmail(receiver: string, verificationCode: string): Promise<void> {
     const user = config.emailUser;
@@ -14,7 +16,7 @@ export async function sendVerificationEmail(receiver: string, verificationCode: 
     const message = msgBody;
 
     /* eslint @typescript-eslint/no-var-requires: 1 */
-    const send = await require("gmail-send")({
+    const send = await gmail({
         user: user,                              // Your GMail account used to send emails
         pass: password,                          // Application-specific password
         to: [receiver],
@@ -25,7 +27,7 @@ export async function sendVerificationEmail(receiver: string, verificationCode: 
         html: message                            // HTML
     });
 
-    send({}, function (err: any, res: any) {
+    send({}, function (err: unknown, res: unknown) {
         if (err) return console.log("* sendEmail() callback returned: err:", err);
         console.log("* sendEmail() callback returned: res:", res);
     });
@@ -48,7 +50,7 @@ export async function sendRecoveryAccount(receiver: string, recoveryCode: string
     const message = msgBody;
 
     /* eslint @typescript-eslint/no-var-requires: 1 */
-    const send = await require("gmail-send")({
+    const send = await gmail({
         user: user,                              // Your GMail account used to send emails
         pass: password,                          // Application-specific password
         to: [receiver],
@@ -59,7 +61,7 @@ export async function sendRecoveryAccount(receiver: string, recoveryCode: string
         html: message                            // HTML
     });
 
-    send({}, function (err: any, res: any) {
+    send({}, function (err: unknown, res: unknown) {
         if (err) return console.log("* sendEmail() callback returned: err:", err);
         console.log("* sendEmail() callback returned: res:", res);
     });
@@ -67,7 +69,7 @@ export async function sendRecoveryAccount(receiver: string, recoveryCode: string
 
 export function createVerificationCode(): string {
     /* eslint @typescript-eslint/no-var-requires: 1 */
-    const cryptoRandomString = require("crypto-random-string");
+    const cryptoRandomString = crypto;
     return cryptoRandomString({length: 32, type: "url-safe"});
 }
 
@@ -76,7 +78,7 @@ export function createVerificationCode(): string {
  */
 export function createRecoveryCode(): string {
     /* eslint @typescript-eslint/no-var-requires: 1 */
-    const cryptoRandomString = require("crypto-random-string");
+    const cryptoRandomString = crypto;
     return cryptoRandomString({length: 32, type: "url-safe"});
 }
 
@@ -85,6 +87,33 @@ export function createRecoveryCode(): string {
  */
 export function createRecoveryCancelCode(): string {
     /* eslint @typescript-eslint/no-var-requires: 1 */
-    const cryptoRandomString = require("crypto-random-string");
+    const cryptoRandomString = crypto;
     return cryptoRandomString({length: 32, type: "url-safe"});
+}
+
+export async function sendUserContactEmail(name: string, userMessage: string, userEmail: string): Promise<void> {
+    const user = config.emailUser;
+    const password = config.emailAppPassword;
+    const cc = config.emailCc;
+
+    const msgBody = name + " heeft een bericht gestuurd:<br><br>" +
+        userMessage + "<br><br>"
+
+    const message = msgBody;
+
+    const send = await gmail({
+        user: user,                              // Your GMail account used to send emails
+        pass: password,                          // Application-specific password
+        to: config.contactEmail,
+        cc: cc,
+        from: userEmail,                            // from: by default equals to user
+        replyTo: userEmail,                         // replyTo: by default `undefined`
+        subject: "Contact",
+        html: message                            // HTML
+    });
+
+    send({}, function (err: unknown, res: unknown) {
+        if (err) return console.log("* sendContactEmail() callback returned: err:", err);
+        console.log("* sendContactEmail() callback returned: res:", res);
+    });
 }

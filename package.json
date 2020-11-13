@@ -20,7 +20,7 @@
 	"author": "Didux.io",
 	"license": "GPL-3.0-only",
 	"dependencies": {
-		"@proofmeid/webrtc": "0.0.4",
+		"@proofmeid/webrtc-node": "0.0.12",
 		"@types/bcrypt": "^3.0.0",
 		"@types/bluebird": "^3.5.27",
 		"@types/cors": "^2.8.4",
@@ -58,7 +58,6 @@
 		"swagger-jsdoc": "5.0.0",
 		"swagger-ui-express": "^4.1.4",
 		"typescript": "3.9.7",
-		"uuidv4": "^6.0.8",
 		"web3": "1.2.5",
 		"ws": "^7.3.1"
 	},

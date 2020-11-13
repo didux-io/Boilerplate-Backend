@@ -4,6 +4,7 @@ import { getJWTToken } from '../utils/token-utils';
 import jwt_decode from "jwt-decode";
 import { createVerificationCode, sendVerificationEmail } from '../utils/email-utils';
 import { generatePasswordHash } from '../utils/global-utils';
+import { Op } from 'sequelize';
 
 export async function createAccount(req: Request, res: Response, next: NextFunction): Promise<void> {
     const email = req.body.email;
@@ -102,5 +103,70 @@ export async function finishRegistration(req: Request, res: Response, next: Next
             console.error(error);
             res.status(400).send();
         }
+    }
+}
+
+export async function usersList(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+        const users = await User.findAll();
+        res.status(200).send(users);
+    } catch (error) {
+        console.error(error);
+        res.status(400).send();
+    }
+}
+
+export async function patchUserAdmin(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const userId = req.params.userId
+    const email = req.body.email;
+    const username = req.body.username;
+    const userPower = req.body.userPower;
+    const active = req.body.active;
+    if (!email) {
+        res.status(400).send({ error: 'Missing email' });
+    } else if (!username) {
+        res.status(400).send({ error: 'Missing username' });
+    } else if (!userPower) {
+        res.status(400).send({ error: 'Missing userPower' });
+    } else if (!active) {
+        res.status(400).send({ error: 'Missing active' });
+    }
+    try {
+        let notEnoughAdmins = false;
+        const userToFind = await User.findOne({where: { id: userId }});
+        if (userToFind.userPower !== parseInt(userPower, 10) && parseInt(userPower, 10) !== 1) {
+            // Check how many admins there are
+            const adminCount = await User.count({ where: {
+                userPower: {
+                    [Op.eq]: 1 
+                }
+            }});
+            // Are there less or equal than 1 admin
+            if (adminCount <= 1) {
+                notEnoughAdmins = true;
+            }
+        }
+        if (notEnoughAdmins) {
+            res.status(400).send({message: "There has to be atleast one admin"});
+        } else {
+            await User.update({
+                email,
+                username,
+                userPower,
+                active
+            }, {
+                where: { id: userId }
+            });
+            const jwtDecoded: any = jwt_decode(req.headers.authorization);
+            let token = null;
+            if (jwtDecoded.userId === parseInt(userId, 10)) {
+                const user = await User.findOne({where: { id: jwtDecoded.userId}});
+                token = getJWTToken(user);
+            }
+            res.status(200).send({token: token});
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(400).send();
     }
 }

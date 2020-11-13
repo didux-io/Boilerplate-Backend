@@ -83,3 +83,30 @@ export function createRecoveryCancelCode() {
     const cryptoRandomString = require('crypto-random-string');
     return cryptoRandomString({length: 32, type: 'url-safe'});
 }
+
+export async function sendUserContactEmail(name: string, userMessage: string, userEmail: string) {
+    const user = config.emailUser;
+    const password = config.emailAppPassword;
+    const cc = config.emailCc;
+
+    const msgBody = name + " heeft een bericht gestuurd:<br><br>" +
+        userMessage + "<br><br>"
+
+    const message = msgBody;
+
+    const send = await require('gmail-send')({
+        user: user,                              // Your GMail account used to send emails
+        pass: password,                          // Application-specific password
+        to: config.contactEmail,
+        cc: cc,
+        from: userEmail,                            // from: by default equals to user
+        replyTo: userEmail,                         // replyTo: by default `undefined`
+        subject: 'Contact',
+        html: message                            // HTML
+    });
+
+    send({}, function (err: any, res: any, full: any) {
+        if (err) return console.log('* sendContactEmail() callback returned: err:', err);
+        console.log('* sendContactEmail() callback returned: res:', res);
+    });
+}

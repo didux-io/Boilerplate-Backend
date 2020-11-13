@@ -10,7 +10,8 @@ import { config } from "../config/config";
 import { Sequelize } from 'sequelize-typescript';
 import { User } from "../db/models/user";
 import { setWeb3Provider } from "../utils/web3-utils";
-import { SignalingServer } from "@proofmeid/webrtc";
+import { SignalingServer } from "@proofmeid/webrtc-node";
+import * as fs from 'fs';
 
 const app = express();
 const applicationTitle = config.application_name;
@@ -56,7 +57,6 @@ signal.setRTCConnectionConfig({
     turnSecret: config.turnSecret,
     turnUrl: config.turnUrl
 })
-signal.startSignal(server);
 
 const sequelize = new Sequelize({
     host: config.databaseHost || 'localhost',
@@ -67,6 +67,12 @@ const sequelize = new Sequelize({
     password: config.databasePassword || 'mysecretpassword',
     logging: false,
 });
+
+function checkJwtKeys(): boolean {
+    const publicJwtKey = fs.existsSync('./jwt-keys/public.pem');
+    const privateJwtKey = fs.existsSync('./jwt-keys/private.pem');
+    return publicJwtKey && privateJwtKey;
+}
 
 config.web3 = new Web3();
 launchApplication();
@@ -81,6 +87,12 @@ function startServer() {
 }
 
 async function launchApplication() {
-    await setWeb3Provider();
-    startServer();
+    const hasJwtKeys = checkJwtKeys();
+    if (hasJwtKeys) {
+        signal.startSignal(server);
+        await setWeb3Provider();
+        startServer();
+    } else {
+        console.error(`ERROR! Your project did not configure the jwt-keys correctly. Please lookin to the readme and follow the steps in 'Creating RS256 keypair for the JWT'`)
+    }
 }

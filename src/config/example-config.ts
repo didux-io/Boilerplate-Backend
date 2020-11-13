@@ -35,7 +35,12 @@ export const config = {
 
     // General
     application_name: process.env.APPLICATION || 'APPLICATION_NAME',
+    application_description: process.env.APPLICATION_DESCRIPTION || 'APPLICATION_DESCRIPTION',
 
     // Account recovery
-    accountRecoveryTimeInMinutes: 10
+    accountRecoveryTimeInMinutes: 10,
+
+    // reCaptcha
+    reCaptchaSecret: null,
+    contactEmail: null
 }

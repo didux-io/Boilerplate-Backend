@@ -1,7 +1,8 @@
-import * as accountController from '../../../controllers/userController';
+import * as userController from '../../../controllers/userController';
 import { Router } from 'express';
 import { checkJwtToken } from '../../../middlewares/jwtMiddleware';
 import { emailConfigEnabled } from '../../../middlewares/emailEnabledMiddleware';
+import { isAdminJwtToken } from "../../../middlewares/isAdminMiddleware";
 
 const router = Router();
 
@@ -24,7 +25,7 @@ const router = Router();
  *       200:
  *         description: User registered
  */
-router.post('/registrate', emailConfigEnabled, accountController.createAccount);
+router.post('/registrate', emailConfigEnabled, userController.createAccount);
 
 /**
  * @swagger
@@ -45,7 +46,7 @@ router.post('/registrate', emailConfigEnabled, accountController.createAccount);
  *       200:
  *         description: User registered
  */
-router.post('/finishRegistration', checkJwtToken, accountController.finishRegistration);
+router.post('/finishRegistration', checkJwtToken, userController.finishRegistration);
 
 /**
  * @swagger
@@ -66,6 +67,10 @@ router.post('/finishRegistration', checkJwtToken, accountController.finishRegist
  *       200:
  *         description: User registered
  */
-router.patch('/:userId', checkJwtToken, accountController.patchUserProfile);
+router.patch('/:userId', checkJwtToken, userController.patchUserProfile);
+
+router.get('/list', checkJwtToken, isAdminJwtToken, userController.usersList);
+
+router.patch('/admin/:userId', checkJwtToken, isAdminJwtToken, userController.patchUserAdmin);
 
 module.exports = router;

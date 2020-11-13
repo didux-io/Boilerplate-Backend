@@ -38,5 +38,9 @@ export const config = {
     application_description: "APPLICATION DESCRIPTION",
 
     // Account recovery
-    accountRecoveryTimeInMinutes: 10
+    accountRecoveryTimeInMinutes: 10,
+
+    // reCaptcha
+    reCaptchaSecret: null,
+    contactEmail: null
 }

@@ -1,7 +1,7 @@
 {
-	"name": "APPLICATION_NAME",
+	"name": "boilerplate-backend",
 	"version": "1.0.0",
-	"description": "Template Backend",
+	"description": "Boilerplate Backend",
 	"main": "./build/src/main/index.js",
 	"scripts": {
 		"prebuild": "node prebuild.js; npm run lint",
@@ -18,12 +18,12 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/Proofme-id/Proofme.id-AuthService.git"
+		"url": "git+https://github.com/didux-io/Boilerplate-Backend.git"
 	},
 	"bugs": {
-		"url": "https://github.com/Proofme-id/Proofme.id-AuthService/issues"
+		"url": "https://github.com/didux-io/Boilerplate-Backend/issues"
 	},
-	"homepage": "https://github.com/Proofme-id/Proofme.id-AuthService",
+	"homepage": "https://www.didux.io",
 	"author": "Didux.io",
 	"license": "GPL-3.0-only",
 	"jest": {
@@ -110,6 +110,7 @@
 		"eslint": "^7.13.0",
 		"eslint-plugin-no-loops": "^0.3.0",
 		"jest": "^26.6.3",
+		"jest-preset-angular": "^8.3.2",
 		"jest-sonar-reporter": "^2.0.0",
 		"mocha": "^8.2.1",
 		"serve": "^11.3.2",

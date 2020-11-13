@@ -9,7 +9,7 @@ import { Sequelize } from "sequelize-typescript";
 import { User } from "../db/models/user";
 import { setWeb3Provider } from "../utils/web3-utils";
 import { SignalingServer } from "@proofmeid/webrtc-node";
-import * as fs from 'fs';
+import * as fs from "fs";
 import { app } from "./server";
 
 const applicationTitle = config.application_name;
@@ -64,8 +64,8 @@ const sequelize = new Sequelize({
 });
 
 function checkJwtKeys(): boolean {
-    const publicJwtKey = fs.existsSync('./jwt-keys/public.pem');
-    const privateJwtKey = fs.existsSync('./jwt-keys/private.pem');
+    const publicJwtKey = fs.existsSync("./jwt-keys/public.pem");
+    const privateJwtKey = fs.existsSync("./jwt-keys/private.pem");
     return publicJwtKey && privateJwtKey;
 }
 
@@ -88,6 +88,6 @@ async function launchApplication() {
         await setWeb3Provider();
         startServer();
     } else {
-        console.error(`ERROR! Your project did not configure the jwt-keys correctly. Please lookin to the readme and follow the steps in 'Creating RS256 keypair for the JWT'`)
+        console.error("ERROR! Your project did not configure the jwt-keys correctly. Please lookin to the readme and follow the steps in 'Creating RS256 keypair for the JWT'")
     }
 }

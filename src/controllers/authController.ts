@@ -228,9 +228,9 @@ export async function authenticateUser(req: Request, res: Response): Promise<voi
             if (user) {
                 bcrypt.compare(password, user.password).then((validPassword: boolean) => {
                     if (!validPassword) {
-                        res.status(400).send({error: 'Wachtwoord en/of gebruikersnaam is niet correct'});
+                        res.status(400).send({error: "Wachtwoord en/of gebruikersnaam is niet correct"});
                     } else if (user.active != true ) {
-                        res.status(400).send({error: 'Gebruiker niet actief'});
+                        res.status(400).send({error: "Gebruiker niet actief"});
                     } else {
                         res.status(200).send({
                             token: getJWTToken(user)

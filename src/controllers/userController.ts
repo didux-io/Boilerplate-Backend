@@ -2,9 +2,9 @@ import { Request, Response } from "express";
 import { User } from "../db/models/user";
 import { getJWTToken } from "../utils/token-utils";
 import jwt_decode from "jwt-decode";
-import { createVerificationCode, sendVerificationEmail } from '../utils/email-utils';
-import { generatePasswordHash } from '../utils/global-utils';
-import { Op } from 'sequelize';
+import { createVerificationCode, sendVerificationEmail } from "../utils/email-utils";
+import { generatePasswordHash } from "../utils/global-utils";
+import { Op } from "sequelize";
 
 export async function createAccount(req: Request, res: Response): Promise<void> {
     const email = req.body.email;
@@ -123,13 +123,13 @@ export async function patchUserAdmin(req: Request, res: Response): Promise<void>
     const userPower = req.body.userPower;
     const active = req.body.active;
     if (!email) {
-        res.status(400).send({ error: 'Missing email' });
+        res.status(400).send({ error: "Missing email" });
     } else if (!username) {
-        res.status(400).send({ error: 'Missing username' });
+        res.status(400).send({ error: "Missing username" });
     } else if (!userPower) {
-        res.status(400).send({ error: 'Missing userPower' });
+        res.status(400).send({ error: "Missing userPower" });
     } else if (!active) {
-        res.status(400).send({ error: 'Missing active' });
+        res.status(400).send({ error: "Missing active" });
     }
     try {
         let notEnoughAdmins = false;

@@ -99,19 +99,19 @@ export async function sendUserContactEmail(name: string, userMessage: string, us
 
     const message = msgBody;
 
-    const send = await require('gmail-send')({
+    const send = await require("gmail-send")({
         user: user,                              // Your GMail account used to send emails
         pass: password,                          // Application-specific password
         to: config.contactEmail,
         cc: cc,
         from: userEmail,                            // from: by default equals to user
         replyTo: userEmail,                         // replyTo: by default `undefined`
-        subject: 'Contact',
+        subject: "Contact",
         html: message                            // HTML
     });
 
     send({}, function (err: any, res: any, full: any) {
-        if (err) return console.log('* sendContactEmail() callback returned: err:', err);
-        console.log('* sendContactEmail() callback returned: res:', res);
+        if (err) return console.log("* sendContactEmail() callback returned: err:", err);
+        console.log("* sendContactEmail() callback returned: res:", res);
     });
 }

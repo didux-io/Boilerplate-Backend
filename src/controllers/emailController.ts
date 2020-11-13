@@ -1,10 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { User } from "../db/models/user";
-import { getJWTToken } from "../utils/token-utils";
-import jwt_decode from "jwt-decode";
-import { createVerificationCode, sendUserContactEmail, sendVerificationEmail } from "../utils/email-utils";
-import { generatePasswordHash } from "../utils/global-utils";
-import { Op } from "sequelize";
+import { sendUserContactEmail } from "../utils/email-utils";
 import { config } from "../config/config";
 import superagent from "superagent";
 

@@ -5,6 +5,7 @@ import jwt_decode from "jwt-decode";
 import { createVerificationCode, sendVerificationEmail } from "../utils/email-utils";
 import { generatePasswordHash } from "../utils/global-utils";
 import { Op } from "sequelize";
+import { IJWTDecoded } from "../interfaces/jwtDecoded.interface";
 
 export async function createAccount(req: Request, res: Response): Promise<void> {
     const email = req.body.email;
@@ -60,7 +61,7 @@ export async function createAccount(req: Request, res: Response): Promise<void> 
 
 export async function patchUserProfile(req: Request, res: Response): Promise<void> {
     try {
-        const jwtDecoded: any = jwt_decode(req.headers.authorization);
+        const jwtDecoded: IJWTDecoded = jwt_decode(req.headers.authorization);
         await User.update({
             username: req.body.username
         }, {
@@ -87,7 +88,7 @@ export async function finishRegistration(req: Request, res: Response): Promise<v
         res.status(400).send({ error: "Missing newsLetterAccepted" });
     } else {
         try {
-            const jwtDecoded: any = jwt_decode(req.headers.authorization);
+            const jwtDecoded: IJWTDecoded = jwt_decode(req.headers.authorization);
             await User.update({
                 username,
                 termsAndPrivacyAccepted,
@@ -157,7 +158,7 @@ export async function patchUserAdmin(req: Request, res: Response): Promise<void>
             }, {
                 where: { id: userId }
             });
-            const jwtDecoded: any = jwt_decode(req.headers.authorization);
+            const jwtDecoded: IJWTDecoded = jwt_decode(req.headers.authorization);
             let token = null;
             if (jwtDecoded.userId === parseInt(userId, 10)) {
                 const user = await User.findOne({where: { id: jwtDecoded.userId}});

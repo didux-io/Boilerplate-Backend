@@ -1,15 +1,10 @@
-import { Request, Response, NextFunction } from "express";
-import { User } from "../db/models/user";
-import { getJWTToken } from "../utils/token-utils";
-import jwt_decode from "jwt-decode";
-import { createVerificationCode, sendUserContactEmail, sendVerificationEmail } from "../utils/email-utils";
-import { generatePasswordHash } from "../utils/global-utils";
-import { Op } from "sequelize";
+import { Request, Response } from "express";
+import { sendUserContactEmail } from "../utils/email-utils";
 import { config } from "../config/config";
 import superagent from "superagent";
 
 
-export async function sendContactEmail(req: Request, res: Response, next: NextFunction): Promise<void> {
+export async function sendContactEmail(req: Request, res: Response): Promise<void> {
     const email = req.body.email;
     const name = req.body.name;
     const message = req.body.message;

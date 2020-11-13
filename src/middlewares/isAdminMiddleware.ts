@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import * as jwt from "jsonwebtoken";
 import * as fs from "fs";
+import { IJWTDecoded } from "../interfaces/jwtDecoded.interface";
 
-export function isAdminJwtToken(req: Request, res: Response, next: NextFunction) {
+export function isAdminJwtToken(req: Request, res: Response, next: NextFunction): void {
     if (res.locals.skipJwtCheck) {
         next();
     } else if (!req.headers.authorization) {
@@ -11,7 +12,7 @@ export function isAdminJwtToken(req: Request, res: Response, next: NextFunction)
     } else {
         const token = req.headers.authorization;
         const cert = fs.readFileSync("./jwt-keys/public.pem");
-        jwt.verify(token, cert, (err: any, decoded: any) => {
+        jwt.verify(token, cert, (err: unknown, decoded: IJWTDecoded) => {
             if (decoded.userPower === 1) {
                 next();
             } else {

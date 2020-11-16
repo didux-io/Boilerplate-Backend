@@ -21,7 +21,7 @@ jobs:
       - run: npm ci
       - run: cp src/config/config.example.ts src/config/config.ts
       - run: npm run test
-      - run: npm run sonar -- -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
+      - run: npm run sonar -- -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }} -Dsonar.projectVersion=${{ github.run_number }}
       - run: npm run build --if-present
       - run: echo IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
       - uses: kciter/aws-ecr-action@v1

@@ -20,7 +20,7 @@ jobs:
       - run: npm ci
       - run: cp src/assets/config/config.ci.json src/assets/config/config.json
       - run: npm run test
-      - run: npm run sonar -- -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }}
+      - run: npm run sonar -- -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }} -Dsonar.projectVersion=${{ github.run_number }}
       - uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}

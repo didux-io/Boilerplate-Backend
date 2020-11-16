@@ -4,7 +4,7 @@
 	"description": "Boilerplate Backend",
 	"main": "./build/src/main/index.js",
 	"scripts": {
-		"prebuild": "node prebuild.js; npm run lint",
+		"prebuild": "node prebuild.js",
 		"start": "nodemon ./build/main/index.js",
 		"build": "tsc -p .",
 		"watch": "tsc -w",
@@ -14,7 +14,7 @@
 		"clean": "rm -rf build coverage",
 		"view:coverage": "serve coverage/lcov-report",
 		"sonar": "sonar-scanner",
-		"test": "cross-env NODE_ENV=test jest --coverage --testTimeout=10000; npm run lint:json"
+		"test": "cross-env NODE_ENV=test jest --coverage --testTimeout=10000 && npm run lint:json"
 	},
 	"repository": {
 		"type": "git",

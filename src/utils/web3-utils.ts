@@ -13,12 +13,12 @@ export function recoverAddressFromSignature(message: string, signature: string):
     return config.web3.eth.accounts.recover(message, signature);
 }
 
-export async function checkKeyForDid(contractAddress: string, publicKey: string): Promise<boolean> {
+export async function publicKeyDoesBelongToDid(did: string, publicKey: string): Promise<boolean> {
     try  {
-        const contract = new config.web3.eth.Contract(abi, contractAddress);
+        const contract = new config.web3.eth.Contract(abi, did);
         const shaAddress = config.web3.utils.sha3(publicKey, {encoding:"hex"});
         return await contract.methods.keyHasPurpose(shaAddress, 2).call().then(
-            function(result) {
+            function(result: unknown) {
                 return result;
             }).catch(
             function() {

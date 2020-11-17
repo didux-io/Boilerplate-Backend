@@ -1,4 +1,4 @@
-import { app } from "../main/server";
+import { app } from "../../main/server";
 import request from "supertest";
 
 describe("CONFIG", () => {

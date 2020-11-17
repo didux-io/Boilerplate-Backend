@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import * as jwt from "jsonwebtoken";
 import * as fs from "fs";
 
-export function checkJwtToken(req: Request, res: Response, next: NextFunction): void {
+export default function(req: Request, res: Response, next: NextFunction): void {
     if (res.locals.skipJwtCheck) {
         next();
     } else if (!req.headers.authorization) {

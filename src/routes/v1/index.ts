@@ -13,4 +13,3 @@ routerV1.use("/auth", routerAuth);
 routerV1.use("/config", routerConfig);
 
 routerV1.use("/email", routerEmail);
-

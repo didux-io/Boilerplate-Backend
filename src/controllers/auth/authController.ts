@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from "express";
-import { config } from "../config/config";
-import * as jwt from "jsonwebtoken";
+import { config } from "../../config/config";
+import jwt from "jsonwebtoken";
 import * as fs from "fs";
-import { checkKeyForDid, isValidCredentials } from "../utils/web3-utils";
-import { generateChallenge, getJWTToken } from "../utils/token-utils";
-import { User } from "../db/models/user";
+import { publicKeyDoesBelongToDid, isValidCredentials } from "../../utils/web3-utils";
+import { generateChallenge, getJWTToken } from "../../utils/token-utils";
+import { User } from "../../db/models/user";
 import * as bcrypt from "bcrypt";
-import { getClaims } from "../utils/jwt-utils";
-import { createRecoveryCancelCode, createRecoveryCode, sendRecoveryAccount } from "../utils/email-utils";
-import { calculateMinutesDifference } from "../utils/global-utils";
+import { getClaims } from "../../utils/jwt-utils";
+import { createRecoveryCancelCode, createRecoveryCode, sendRecoveryAccount } from "../../utils/email-utils";
+import { calculateMinutesDifference } from "../../utils/global-utils";
 import { Op } from "sequelize";
 
 export async function getAuthChallenge(req: Request, res: Response): Promise<void> {
@@ -21,9 +21,9 @@ export async function getAuthChallenge(req: Request, res: Response): Promise<voi
         }
 
         if (!publicKey || publicKey === "undefined") {
-            res.status(400).send({error: "Publickey missing"});
+            res.status(400).send({ error: "Publickey missing" });
             return;
-        } else if (!await checkKeyForDid(did, publicKey)) {
+        } else if (!(await publicKeyDoesBelongToDid(did, publicKey))) {
             res.status(400).send({ error: publicKey + " is not part of identity " + did });
             return;
         }
@@ -52,42 +52,51 @@ export async function getAuthChallenge(req: Request, res: Response): Promise<voi
 }
 
 export async function validateSignature(req: Request, res: Response): Promise<void> {
-    const signature = req.body.signature;
-    const publicKey = req.body.publicKey;
-    let did = req.body.did;
-    const timestamp = req.body.timestamp;
-    const credentials = req.body.credentials;
+    try {
+        const signature = req.body.signature;
+        const publicKey = req.body.publicKey;
+        let did = req.body.did;
+        const timestamp = req.body.timestamp;
+        const credentials = req.body.credentials;
 
-    if (!did || did === "undefined") {
-        did = publicKey;
-    }
+        if (!did || did === "undefined") {
+            did = publicKey;
+        }
 
-    const currentTimestamp = Math.floor(Date.now() / 1000);
-    const loginEndpoint = "https://" + req.get("host") + req.originalUrl;
-    if (!signature) {
-        res.status(400).send({ error: "Signature missing in body" });
-        return;
-    } else if (!publicKey) {
-        res.status(400).send({ error: "Publickey missing in body" });
-        return;
-    } else if (!timestamp) {
-        res.status(400).send({ error: "Timestamp missing in body" });
-        return;
-    } else if (parseInt(timestamp) + 10 < currentTimestamp) {
-        res.status(400).send({ error: "Timestamp expired" });
-        return;
-    } else if (!await checkKeyForDid(did, publicKey)) {
-        res.status(400).send({ error: + publicKey + " is not part of identity " + did });
-        return;
-    }
-    // So we can authenticate with credentials
-    // - Create an account for the email in this case if it does not yet exist
-    // - If the account exists, check if the publickey is the same, otherwhise send
-    let user = await User.findOne({ where: { publicKey }});
-    let recoveryUser = null;
-    if (!user && credentials) {
-        const validCredentials = await isValidCredentials(credentials);
-        if (validCredentials) {
+        const currentTimestamp = Math.floor(Date.now() / 1000);
+        const loginEndpoint = "https://" + req.get("host") + req.originalUrl;
+        if (!signature) {
+            console.error("Signature missing in body");
+            res.status(400).send({ error: "Signature missing in body" });
+            return;
+        } else if (!publicKey) {
+            console.log("2.2 validateSignature");
+            console.error("Publickey missing in body");
+            res.status(400).send({ error: "Publickey missing in body" });
+            return;
+        } else if (!timestamp) {
+            console.log("2.3 validateSignature");
+            console.error("Timestamp missing in body");
+            res.status(400).send({ error: "Timestamp missing in body" });
+            return;
+        } else if (parseInt(timestamp) + 10 < currentTimestamp) {
+            // console.log("2.4 validateSignature");
+            console.error("Timestamp expired");
+            res.status(400).send({ error: "Timestamp expired" });
+            return;
+        } else if (!(await publicKeyDoesBelongToDid(did, publicKey))) {
+            console.log("2.5 validateSignature");
+            console.error(`${publicKey} is not part of identity ${did}`);
+            res.status(400).send({ error: `${publicKey} is not part of identity ${did}` });
+            return;
+        }
+        // So we can authenticate with credentials
+        // - Create an account for the email in this case if it does not yet exist
+        // - If the account exists, check if the publickey is the same, otherwhise send
+        let user = await User.findOne({ where: { publicKey }});
+        let recoveryUser = null;
+        const validCredentials = credentials ? await isValidCredentials(credentials) : false;
+        if (!user && credentials && validCredentials) {
             // Email validation
             if (credentials.credential && credentials.credential.EMAIL) {
                 const email = credentials.credential.EMAIL.credentialSubject.credential.value;
@@ -151,9 +160,7 @@ export async function validateSignature(req: Request, res: Response): Promise<vo
                 }
             }
         }
-    }
 
-    try {
         if (user) {
             const challenge = await generateChallenge(publicKey, did, loginEndpoint, timestamp);
             const signingAddress = await config.web3.eth.accounts.recover(challenge, signature);
@@ -166,13 +173,17 @@ export async function validateSignature(req: Request, res: Response): Promise<vo
                 res.status(400).send({ error: "Publickey doesn't match signature." });
                 return;
             }
-        } else if (recoveryUser) {
-            res.status(200).send({
-                extra: "recover"
-            });
         } else if (!recoveryUser) {
             res.status(200).send({
                 extra: "identify"
+            });
+        } else if (!validCredentials) {
+            res.status(400).send({
+                error: "Credentials not valid"
+            });
+        } else if (recoveryUser) {
+            res.status(200).send({
+                extra: "recover"
             });
         }
     } catch (error) {

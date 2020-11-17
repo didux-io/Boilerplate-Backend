@@ -1,4 +1,4 @@
-import * as emailController from "../../../controllers/emailController";
+import * as emailController from "../../../controllers/email/emailController";
 import { Router } from "express";
 
 export const routerEmail = Router();

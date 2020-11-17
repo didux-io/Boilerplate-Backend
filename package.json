@@ -14,7 +14,8 @@
 		"clean": "rm -rf build coverage",
 		"view:coverage": "serve coverage/lcov-report",
 		"sonar": "sonar-scanner",
-		"test": "cross-env NODE_ENV=test jest --coverage --testTimeout=10000; npm run lint:json"
+		"test": "cross-env NODE_ENV=test jest --coverage --silent --testTimeout=10000 && npm run lint:json",
+		"test:one-file": "cross-env NODE_ENV=test jest --coverage --testTimeout=10000 -- server"
 	},
 	"repository": {
 		"type": "git",

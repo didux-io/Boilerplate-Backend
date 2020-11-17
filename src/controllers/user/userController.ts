@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { User } from "../db/models/user";
-import { getJWTToken } from "../utils/token-utils";
+import { User } from "../../db/models/user";
+import { getJWTToken } from "../../utils/token-utils";
 import jwt_decode from "jwt-decode";
-import { createVerificationCode, sendVerificationEmail } from "../utils/email-utils";
-import { generatePasswordHash } from "../utils/global-utils";
+import { createVerificationCode, sendVerificationEmail } from "../../utils/email-utils";
+import { generatePasswordHash } from "../../utils/global-utils";
 import { Op } from "sequelize";
-import { IJWTDecoded } from "../interfaces/jwtDecoded.interface";
+import { IJWTDecoded } from "../../interfaces/jwtDecoded.interface";
 
 export async function createAccount(req: Request, res: Response): Promise<void> {
     const email = req.body.email;

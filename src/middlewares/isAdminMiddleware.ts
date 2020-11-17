@@ -3,7 +3,7 @@ import * as jwt from "jsonwebtoken";
 import * as fs from "fs";
 import { IJWTDecoded } from "../interfaces/jwtDecoded.interface";
 
-export function isAdminJwtToken(req: Request, res: Response, next: NextFunction): void {
+export default function(req: Request, res: Response, next: NextFunction): void {
     if (res.locals.skipJwtCheck) {
         next();
     } else if (!req.headers.authorization) {

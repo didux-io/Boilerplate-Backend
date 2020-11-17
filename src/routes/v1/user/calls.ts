@@ -1,8 +1,8 @@
-import * as userController from "../../../controllers/userController";
+import * as userController from "../../../controllers/user/userController";
 import { Router } from "express";
-import { checkJwtToken } from "../../../middlewares/jwtMiddleware";
-import { emailConfigEnabled } from "../../../middlewares/emailEnabledMiddleware";
-import { isAdminJwtToken } from "../../../middlewares/isAdminMiddleware";
+import checkJwtToken from "../../../middlewares/jwtMiddleware";
+import emailConfigEnabled from "../../../middlewares/emailEnabledMiddleware";
+import isAdminJwtToken from "../../../middlewares/isAdminMiddleware";
 
 export const routerUser = Router();
 

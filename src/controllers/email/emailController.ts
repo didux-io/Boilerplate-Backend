@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { sendUserContactEmail } from "../utils/email-utils";
-import { config } from "../config/config";
+import { sendUserContactEmail } from "../../utils/email-utils";
+import { config } from "../../config/config";
 import superagent from "superagent";
 
 

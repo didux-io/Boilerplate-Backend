@@ -33,9 +33,15 @@ export const config = {
     emailUser: "",
     emailAppPassword: "",
 
+    // Socials
+    twitterUrl: "",
+    linkedInUrl: "",
+    facebookUrl: "",
+
     // General
     application_name: process.env.APPLICATION || "APPLICATION_NAME",
     application_description: "APPLICATION DESCRIPTION",
+    application_url: "https://www.example.com",
 
     // Account recovery
     accountRecoveryTimeInMinutes: 10,

@@ -10,10 +10,13 @@ import { IJWTDecoded } from "../interfaces/jwtDecoded.interface";
 export async function createAccount(req: Request, res: Response): Promise<void> {
     const email = req.body.email;
     const password = req.body.password;
+    const language = req.body.language;
     if (!email) {
         res.status(400).send({ error: "Missing email" });
     } else if (!password) {
         res.status(400).send({ error: "Missing password" });
+    } else if (!language) {
+        res.status(400).send({ error: "Missing language" });
     } else {
         const user = await User.findOne({where: { email }});
         // If the user has any information (setup with mobile WebRTC?)
@@ -28,7 +31,7 @@ export async function createAccount(req: Request, res: Response): Promise<void> 
                 }, {
                     where: { id: user.id }
                 });
-                sendVerificationEmail(email, verificationCode);
+                sendVerificationEmail(email, verificationCode, language);
                 res.status(200).send({message: "Updated!"});
             } else {
                 res.status(400).send({ message: "Email already exists" });
@@ -43,17 +46,19 @@ export async function createAccount(req: Request, res: Response): Promise<void> 
                     email,
                     password: hashedPassword,
                     userPower: 1,
-                    emailVerificationCode: verificationCode
+                    emailVerificationCode: verificationCode,
+                    lang: language
                 });
             } else {
                 await User.create({
                     email,
                     password: hashedPassword,
                     userPower: 100,
-                    emailVerificationCode: verificationCode
+                    emailVerificationCode: verificationCode,
+                    lang: language
                 });
             }
-            sendVerificationEmail(email, verificationCode);
+            sendVerificationEmail(email, verificationCode, language);
             res.status(200).send({message: "Created!"});
         }
     }
@@ -63,7 +68,8 @@ export async function patchUserProfile(req: Request, res: Response): Promise<voi
     try {
         const jwtDecoded: IJWTDecoded = jwt_decode(req.headers.authorization);
         await User.update({
-            username: req.body.username
+            username: req.body.username,
+            lang: req.body.language
         }, {
             where: { id: jwtDecoded.userId }
         });
@@ -80,6 +86,7 @@ export async function finishRegistration(req: Request, res: Response): Promise<v
     const username = req.body.username;
     const termsAndPrivacyAccepted = req.body.termsAndPrivacyAccepted;
     const newsLetterAccepted = req.body.newsLetterAccepted;
+    const language = req.body.language;
     if (!username) {
         res.status(400).send({ error: "Missing username" });
     } else if (termsAndPrivacyAccepted === "undefined") {
@@ -93,7 +100,8 @@ export async function finishRegistration(req: Request, res: Response): Promise<v
                 username,
                 termsAndPrivacyAccepted,
                 newsLetterAccepted,
-                active: true
+                active: true,
+                lang: language
             }, {
                 where: { id: jwtDecoded.userId }
             });

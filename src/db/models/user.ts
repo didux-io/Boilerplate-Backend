@@ -83,4 +83,8 @@ export class User extends Model<User> {
     @Unique
     @Column
     accountRecoveryDid: string;
+
+    @AllowNull(true)
+    @Column
+    lang: string;
 }

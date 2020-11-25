@@ -8,16 +8,12 @@
         #outlook a{padding:0;} /* Force Outlook to provide a "view in browser" message */
         .ReadMsgBody{width:100%;} .ExternalClass{width:100%;} /* Force Hotmail to display emails at full width */
         .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;} /* Force Hotmail to display normal line spacing */
-        body, table, td, a{-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;font-family: verdana,geneva,sans-serif;} /* Prevent WebKit and Windows mobile changing default text sizes */
-        table, td{mso-table-lspace:0pt; mso-table-rspace:0pt;} /* Remove spacing between tables in Outlook 2007 and up */
-        img{-ms-interpolation-mode:bicubic;} /* Allow smoother rendering of resized image in Internet Explorer */
-        img.mobile-logo{max-width: 200px;}
+        table, td, a{-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;font-family: verdana,geneva,sans-serif;} /* Prevent WebKit and Windows mobile changing default text sizes */
+        img{-ms-interpolation-mode:bicubic;border:0; height:auto; line-height:100%; outline:none; text-decoration:none;} /* Allow smoother rendering of resized image in Internet Explorer */
       
         /* RESET STYLES */
-        body{margin:0; padding:0;background-color:#F6F5F7;}
-        img{border:0; height:auto; line-height:100%; outline:none; text-decoration:none;}
-        table{border-collapse:collapse !important;}
-        body{height:100% !important; margin:0; padding:0; width:100% !important;}
+        body{width:100% !important;height:100% !important;margin:0;padding:0;background-color:#F6F5F7;-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;font-family: verdana,geneva,sans-serif;}
+        table{width:1024px;margin:0 auto;background-color:#FFF;border-collapse:collapse !important;text-align:center;}
         h1{margin-bottom: -25px !important;}
       
         /* iOS BLUE LINKS */
@@ -25,198 +21,197 @@
         .appleFooter a {color:#999999; text-decoration: none;}
 
         /* CENTER STYLES */
-        .text-center { text-align: center; margin: 0 auto !important; }
+        .socials {width:150px;height:30px;}
         td[class="logo"]{margin:0 auto !important;}
         td[class="logo"] img{margin:0 auto !important;}
 
         /* MOBILE STYLES */
-        @media screen and (max-width: 666px) {
-        /* USE THESE CLASSES TO HIDE CONTENT ON MOBILE */
-        td.mobile-hide { display:none; }
-        img.mobile-logo { display:none; }
+        img.mobile-logo{max-width: 150px;}
         
-        /* UTILITY CLASSES FOR ADJUSTING PADDING ON MOBILE */
-        td[class="padding"]{padding: 10px 5% 15px 5% !important;}
+        @media screen and (max-width: 666px) {
+            /* USE THESE CLASSES TO HIDE CONTENT ON MOBILE */
+            td.mobile-hide { display:none; }
+            img.mobile-logo { display:none; }
+            
+            /* UTILITY CLASSES FOR ADJUSTING PADDING ON MOBILE */
+            td[class="padding"]{padding: 10px 5% 15px 5% !important;}
         }
     </style>
 </head>
   
 <body style="margin: 0; padding: 0;">
-    <!-- Logo -->
-    <table border="0" cellpadding="0" cellspacing="0" width="100%" align="center">
-        <tbody>
-            <tr>
-                <td align="center">
-                    <table bgcolor="#FFFFFF" border="0" cellpadding="0" cellspacing="0" width="1024">
-                        <tbody>
-                            <tr>
-                                <td style="padding: 30px 0px 20px 0px;" class="logo">
-                                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                                        <tbody>
-                                            <tr bgcolor="#FFFFFF">
-                                                <td class="logo"><center><a href="{{ application_url }}" target="_blank"><img src="{{ application_url }}/assets/img/logo.png" width="150"></a></center></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-  
-    <!-- HR -->
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-        <tbody>
-            <tr>
-                <td align="center" class="mobile-hide">
-                    <table bgcolor="#FFFFFF" border="0" cellpadding="0" cellspacing="0" width="1024">
-                        <tbody>
-                            <tr>
-                                <td>
+    <table aria-describedby="logo">
+        <tr>
+            <td>
+                <table aria-describedby="logo">
+                    <tbody>
+                        <tr>
+                            <td style="padding: 30px 0px 20px 0px;" class="logo">
+                                <table aria-describedby="logo">
+                                    <tbody>
+                                        <tr>
+                                            <th></th>
+                                        </tr>
+                                        <tr>
+                                            <td><a href="{{ application_url }}" target="_blank"><img src="{{ application_url }}/assets/img/logo.png" class="mobile-logo" alt="Logo"></a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
 
-                                    <table border="0" cellpadding="0" cellspacing="0" width="1024">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                
-                                                    <table width="100%" style="padding: 0px 20px;" border="0" cellspacing="0" cellpadding="0">
-                                                        <tbody>
-                                                            <tr>
-                                                                <td align="center" style="border-bottom: 1px #CFD2D3 solid;"></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+        <tr>
+            <td>
+                <table aria-describedby="divider">
+                    <tbody>
+                        <tr>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table aria-describedby="divider">
+                                    <tbody>
+                                        <tr>
+                                            <th></th>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 0 0 0 0; border-bottom: 1px #CFD2D3 solid;"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
 
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+        <tr>
+            <td>
+                <table aria-describedby="content">
+                    <tbody>
+                        <tr>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table aria-describedby="content">
+                                    <tbody>
+                                        <tr>
+                                            <th></th>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 20px">
+                                                <h1 style="padding:0;color:#02475b;">{{ language.greeting }} {{ user }},</h1><br><br>
 
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
+                                                <p>{{ language.text }}<br><a href="{{ recoveryUrl }}">{{ language.button }}</a></p>
+                                                <p>{{ language.text_cancel }}<br><a href="{{ cancelRecoveryUrl }}">{{ language.button_cancel }}</a></p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
 
-            <tr>
-                <td align="center">
-                    <table border="0" cellpadding="0" cellspacing="0" width="1024">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <table bgcolor="#FFFFFF" width="100%" border="0" cellspacing="0" cellpadding="0">
-                                        <tbody>
-                                            <tr>
-                                                <td align="center" style="padding: 20px">
-                                                    <h1 style="padding:0;color:#02475b;">{{ language.greeting }} {{ user }},</h1><br><br>
+        <tr>
+            <td>
+                <table aria-describedby="divider">
+                    <tbody>
+                        <tr>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table aria-describedby="divider">
+                                    <tbody>
+                                        <tr>
+                                            <th></th>
+                                        </tr>
+                                        <tr>
+                                            <td style="padding: 0 0 0 0; border-bottom: 1px #CFD2D3 solid;"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
 
-                                                    <p>{{ language.text }}<br><a href="{{ recoveryUrl }}">{{ language.button }}</a></p>
-                                                    <p>{{ language.text_cancel }}<br><a href="{{ cancelRecoveryUrl }}">{{ language.button_cancel }}</a></p>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th></th>
+                            <td></td>
+                        </tr>
+            
+                        <tr>
+                            <td>
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <th></th>
+                                        </tr>
 
-            <tr>
-                <td align="center">
-                    <table border="0" cellpadding="0" cellspacing="0" width="1024">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                        <tbody>
-                                            <tr>
-                                                <td align="center" style="padding: 0 0 0 0; border-bottom: 1px #CFD2D3 solid;"></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-  
-    <table border="0" cellpadding="0" cellspacing="0" width="100%" align="center">
-        <tbody>
-            <tr>
-                <td align="center">
-                    <table border="0" cellpadding="0" cellspacing="0" width="1024" bgcolor="#FFFFFF">
-                        <tbody>
-                            <tr>
-                                <td></td>
-                            </tr>
-                
-                            <tr>
-                                <td>
-                                    <table width="140" height="27" border="0" cellspacing="0" cellpadding="0" align="center">
-                                        <tbody>
-                                            <tr> 
-                                                <td style="padding-top: 36px; padding-bottom:20px;">
-                                                    <table height="27" border="0" cellspacing="0" cellpadding="0" align="center">
-                                                        <tbody>
-                                                            <tr align="center">
-                                                                <td width="33">
-                                                                <a href="{{ twitterUrl }}" border="0" target="_blank"><img src="https://i.ibb.co/jv743x2/twitter.png" width="32" height="32"></a>
-                                                                </td>
-                                                                <td width="26">
-                                                                <a href="{{ linkedInUrl }}" border="0" target="_blank"><img src="https://i.ibb.co/5Mm837L/linkedin.png" width="32" height="32"></a>
-                                                                </td>
-                                                                <td width="26">
-                                                                <a href="{{ facebookUrl }}" border="0" target="_blank"><img src="https://i.ibb.co/tqM6hP5/facebook.png" width="32" height="32"></a>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-  
-                            <tr>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    
-    <!-- Footer -->
-    <table border="0" cellpadding="0" cellspacing="0" width="100%">
-        <tbody>
-            <tr>
-                <td align="center">
-                    <table width="1024" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#FFFFFF">
-                        <tbody>
-                            <tr>
-                                <td align="center" style="font-size: 12px; line-height: 18px; font-family: Helvetica, Arial, sans-serif; color:#005e82; padding-bottom: 20px;">
-                                    <span class="appleFooter" style="color:#02475b;">{{ application_name }}</span><br>
-                                    <a href="{{ application_url }}/contact" style="color: #005e82; text-decoration: none;" target="_blank">Contact</a>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
-                                    <a href="{{ application_url }}/terms-conditions" style="color: #005e82; text-decoration: none;" target="_blank">Terms and Conditions</a>
-                                    <span style="font-family: Arial, sans-serif; font-size: 12px; color: #444444;">&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;</span>
-                                    <a href="{{ application_url }}/privacy-policy" style="color: #005e82; text-decoration: none;" target="_blank">Privacy Policy</a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-        </tbody>
+                                        <tr> 
+                                            <td style="padding-top: 36px; padding-bottom:20px;">
+                                                <table class="socials" aria-describedby="socials">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                            <a href="{{ twitterUrl }}" target="_blank"><img src="https://i.ibb.co/jv743x2/twitter.png" width="32" height="32"></a>
+                                                            </td>
+                                                            <td>
+                                                            <a href="{{ linkedInUrl }}" target="_blank"><img src="https://i.ibb.co/5Mm837L/linkedin.png" width="32" height="32"></a>
+                                                            </td>
+                                                            <td>
+                                                            <a href="{{ facebookUrl }}" target="_blank"><img src="https://i.ibb.co/tqM6hP5/facebook.png" width="32" height="32"></a>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <table aria-describedby="footer">
+                    <tbody>
+                        <tr>
+                            <td style="font-size: 12px; line-height: 18px; font-family: Helvetica, Arial, sans-serif; color:#005e82; padding-bottom: 20px;">
+                                <span class="appleFooter" style="color:#02475b;">{{ application_name }}</span><br>
+                                <a href="{{ application_url }}/contact" style="color: #005e82; text-decoration: none;" target="_blank">Contact</a>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
+                                <a href="{{ application_url }}/terms-conditions" style="color: #005e82; text-decoration: none;" target="_blank">Terms and Conditions</a>
+                                <span style="font-family: Arial, sans-serif; font-size: 12px; color: #444444;">&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;</span>
+                                <a href="{{ application_url }}/privacy-policy" style="color: #005e82; text-decoration: none;" target="_blank">Privacy Policy</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
     </table>
 </body>

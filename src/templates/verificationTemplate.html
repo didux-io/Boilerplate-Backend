@@ -40,20 +40,16 @@
 </head>
   
 <body style="margin: 0; padding: 0;">
-    <table aria-describedby="logo">
+    <table aria-describedby="mail">
         <tr>
             <th scope="col"></th>
-        </tr>
-        <tr>
             <td>
                 <table aria-describedby="logo">
                     <tr>
                         <td style="padding: 30px 0px 20px 0px;" class="logo">
                             <table aria-describedby="logo">
                                 <tr>
-                                    <th scope="col"></th>
-                                </tr>
-                                <tr>
+                                    <th id="logo"></th>
                                     <td><a href="{{ application_url }}" target="_blank"><img src="{{ application_url }}/assets/img/logo.png" class="mobile-logo" alt="Logo"></a></td>
                                 </tr>
                             </table>
@@ -68,14 +64,10 @@
                 <table aria-describedby="divider">
                     <tr>
                         <th scope="col"></th>
-                    </tr>
-                    <tr>
                         <td>
                             <table aria-describedby="divider">
                                 <tr>
-                                    <th scope="col"></th>
-                                </tr>
-                                <tr>
+                                    <th id="divider1"></th>
                                     <td style="padding: 0 0 0 0; border-bottom: 1px #CFD2D3 solid;"></td>
                                 </tr>
                             </table>
@@ -90,14 +82,10 @@
                 <table aria-describedby="content">
                     <tr>
                         <th scope="col"></th>
-                    </tr>
-                    <tr>
                         <td>
                             <table aria-describedby="content">
                                 <tr>
-                                    <th scope="col"></th>
-                                </tr>
-                                <tr>
+                                    <th id="content"></th>
                                     <td style="padding: 20px">
                                         <h1 style="padding:0;color:#02475b;">{{ language.greeting }} {{ user }},</h1><br><br>
 
@@ -117,14 +105,10 @@
                 <table aria-describedby="divider">
                     <tr>
                         <th scope="col"></th>
-                    </tr>
-                    <tr>
                         <td>
                             <table aria-describedby="divider">
                                 <tr>
-                                    <th scope="col"></th>
-                                </tr>
-                                <tr>
+                                    <th id="divider2"></th>
                                     <td style="padding: 0 0 0 0; border-bottom: 1px #CFD2D3 solid;"></td>
                                 </tr>
                             </table>
@@ -136,36 +120,21 @@
 
         <tr>
             <td>
-                <table>
-                    <tr>
+                <table aria-describedby="socials">
+                    <tr> 
                         <th scope="col"></th>
-                    </tr>
-        
-                    <tr>
-                        <td>
-                            <table aria-describedby="socials">
+                        <td style="padding-top: 36px; padding-bottom:20px;">
+                            <table class="socials" aria-describedby="socials">
                                 <tr>
-                                    <th scope="col"></th>
-                                </tr>
-
-                                <tr> 
-                                    <td style="padding-top: 36px; padding-bottom:20px;">
-                                        <table class="socials" aria-describedby="socials">
-                                            <tr>
-                                                <th scope="col"></th>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                <a href="{{ twitterUrl }}" target="_blank"><img src="https://i.ibb.co/jv743x2/twitter.png" width="32" height="32" alt="Twitter"></a>
-                                                </td>
-                                                <td>
-                                                <a href="{{ linkedInUrl }}" target="_blank"><img src="https://i.ibb.co/5Mm837L/linkedin.png" width="32" height="32" alt="LinkedIn"></a>
-                                                </td>
-                                                <td>
-                                                <a href="{{ facebookUrl }}" target="_blank"><img src="https://i.ibb.co/tqM6hP5/facebook.png" width="32" height="32" alt="Facebook"></a>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                    <th id="socials"></th>
+                                    <td>
+                                    <a href="{{ twitterUrl }}" target="_blank"><img src="https://i.ibb.co/jv743x2/twitter.png" width="32" height="32" alt="Twitter"></a>
+                                    </td>
+                                    <td>
+                                    <a href="{{ linkedInUrl }}" target="_blank"><img src="https://i.ibb.co/5Mm837L/linkedin.png" width="32" height="32" alt="LinkedIn"></a>
+                                    </td>
+                                    <td>
+                                    <a href="{{ facebookUrl }}" target="_blank"><img src="https://i.ibb.co/tqM6hP5/facebook.png" width="32" height="32" alt="Facebook"></a>
                                     </td>
                                 </tr>
                             </table>
@@ -178,6 +147,7 @@
         <tr>
             <td>
                 <table aria-describedby="footer">
+                    <th id="footer"></th>
                     <tr>
                         <td style="font-size: 12px; line-height: 18px; font-family: Helvetica, Arial, sans-serif; color:#005e82; padding-bottom: 20px;">
                             <span class="appleFooter" style="color:#02475b;">{{ application_name }}</span><br>

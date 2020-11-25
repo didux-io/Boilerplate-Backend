@@ -1,164 +1,88 @@
+<html>
 <head>
     <title>Example Mail</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <style type="text/css">
+        /* RESET STYLES */
+        body{background:#F6F5F7 !important;margin:0;padding:0;-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;font-family: verdana,geneva,sans-serif;}
+        table{width:1024px;margin:0 auto;background-color:#FFF;border-collapse:collapse !important;text-align:center;}
+        h1{margin-bottom: -25px !important;}
+
         /* CLIENT-SPECIFIC STYLES */
         #outlook a{padding:0;} /* Force Outlook to provide a "view in browser" message */
         .ReadMsgBody{width:100%;} .ExternalClass{width:100%;} /* Force Hotmail to display emails at full width */
         .ExternalClass, .ExternalClass p, .ExternalClass span, .ExternalClass font, .ExternalClass td, .ExternalClass div {line-height: 100%;} /* Force Hotmail to display normal line spacing */
         table, td, a{-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;font-family: verdana,geneva,sans-serif;} /* Prevent WebKit and Windows mobile changing default text sizes */
         img{-ms-interpolation-mode:bicubic;border:0; height:auto; line-height:100%; outline:none; text-decoration:none;} /* Allow smoother rendering of resized image in Internet Explorer */
-      
-        /* RESET STYLES */
-        body{width:100% !important;height:100% !important;margin:0;padding:0;background-color:#F6F5F7;-webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;font-family: verdana,geneva,sans-serif;}
-        table{width:1024px;margin:0 auto;background-color:#FFF;border-collapse:collapse !important;text-align:center;}
-        h1{margin-bottom: -25px !important;}
-      
+​
         /* iOS BLUE LINKS */
-        .appleBody a {color:#68440a; text-decoration: none;}
-        .appleFooter a {color:#999999; text-decoration: none;}
-
+        .appleBody a {color:#68440a;text-decoration:none;}
+        .appleFooter a {color:#999999;text-decoration:none;}
         /* CENTER STYLES */
         .socials {width:150px;height:30px;}
+        .socials > td {padding:25px 5px;display:inline-block;}
         td[class="logo"]{margin:0 auto !important;}
         td[class="logo"] img{margin:0 auto !important;}
-
         /* MOBILE STYLES */
         img.mobile-logo{max-width: 150px;}
-        
+​
         @media screen and (max-width: 666px) {
             /* USE THESE CLASSES TO HIDE CONTENT ON MOBILE */
             td.mobile-hide { display:none; }
             img.mobile-logo { display:none; }
-            
+​
             /* UTILITY CLASSES FOR ADJUSTING PADDING ON MOBILE */
             td[class="padding"]{padding: 10px 5% 15px 5% !important;}
         }
     </style>
 </head>
-  
-<body style="margin: 0; padding: 0;">
+​
+<body>
     <table aria-describedby="mail">
         <tr>
-            <th scope="col"></th>
-            <td>
-                <table aria-describedby="logo">
-                    <tr>
-                        <td style="padding: 30px 0px 20px 0px;" class="logo">
-                            <table aria-describedby="logo">
-                                <tr>
-                                    <th id="logo"></th>
-                                    <td><a href="{{ application_url }}" target="_blank"><img src="{{ application_url }}/assets/img/logo.png" class="mobile-logo" alt="Logo"></a></td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
+            <th scope="content"></th>
+        </tr>
+        <tr>
+            <td style="padding: 30px 0px 20px 0px;" class="logo">
+                <a href="{{ application_url }}" target="_blank"><img src="{{ application_url }}/assets/img/logo.png" class="mobile-logo" alt="Logo"></a>
             </td>
         </tr>
-
         <tr>
-            <td>
-                <table aria-describedby="divider">
-                    <tr>
-                        <th scope="col"></th>
-                        <td>
-                            <table aria-describedby="divider">
-                                <tr>
-                                    <th id="divider1"></th>
-                                    <td style="padding: 0 0 0 0; border-bottom: 1px #CFD2D3 solid;"></td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
+            <td style="padding: 0 0 0 0; border-bottom: 1px #CFD2D3 solid;"></td>
+        </tr>
+        <tr>
+            <td style="padding: 20px">
+                <h1 style="padding:0;color:#02475b;">{{ language.greeting }} {{ user }},</h1><br><br>
+
+                <p>{{ language.text }}<br><a href="{{ recoveryUrl }}">{{ language.button }}</a></p>
+                <p>{{ language.text_cancel }}<br><a href="{{ cancelRecoveryUrl }}">{{ language.button_cancel }}</a></p>
             </td>
         </tr>
-
         <tr>
+            <td style="padding: 0 0 0 0; border-bottom: 1px #CFD2D3 solid;"></td>
+        </tr>
+        <tr class="socials">
             <td>
-                <table aria-describedby="content">
-                    <tr>
-                        <th scope="col"></th>
-                        <td>
-                            <table aria-describedby="content">
-                                <tr>
-                                    <th id="content"></th>
-                                    <td style="padding: 20px">
-                                        <h1 style="padding:0;color:#02475b;">{{ language.greeting }} {{ user }},</h1><br><br>
-
-                                        <p>{{ language.text }}<br><a href="{{ recoveryUrl }}">{{ language.button }}</a></p>
-                                        <p>{{ language.text_cancel }}<br><a href="{{ cancelRecoveryUrl }}">{{ language.button_cancel }}</a></p>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
+                <a href="{{ twitterUrl }}" target="_blank"><img src="https://i.ibb.co/jv743x2/twitter.png" width="32" height="32" alt="Twitter"></a>
+            </td>
+            <td>
+                <a href="{{ linkedInUrl }}" target="_blank"><img src="https://i.ibb.co/5Mm837L/linkedin.png" width="32" height="32" alt="LinkedIn"></a>
+            </td>
+            <td>
+                <a href="{{ facebookUrl }}" target="_blank"><img src="https://i.ibb.co/tqM6hP5/facebook.png" width="32" height="32" alt="Facebook"></a>
             </td>
         </tr>
-
         <tr>
-            <td>
-                <table aria-describedby="divider">
-                    <tr>
-                        <th scope="col"></th>
-                        <td>
-                            <table aria-describedby="divider">
-                                <tr>
-                                    <th id="divider2"></th>
-                                    <td style="padding: 0 0 0 0; border-bottom: 1px #CFD2D3 solid;"></td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <table aria-describedby="socials">
-                    <tr> 
-                        <th scope="col"></th>
-                        <td style="padding-top: 36px; padding-bottom:20px;">
-                            <table class="socials" aria-describedby="socials">
-                                <tr>
-                                    <th id="socials"></th>
-                                    <td>
-                                    <a href="{{ twitterUrl }}" target="_blank"><img src="https://i.ibb.co/jv743x2/twitter.png" width="32" height="32" alt="Twitter"></a>
-                                    </td>
-                                    <td>
-                                    <a href="{{ linkedInUrl }}" target="_blank"><img src="https://i.ibb.co/5Mm837L/linkedin.png" width="32" height="32" alt="LinkedIn"></a>
-                                    </td>
-                                    <td>
-                                    <a href="{{ facebookUrl }}" target="_blank"><img src="https://i.ibb.co/tqM6hP5/facebook.png" width="32" height="32" alt="Facebook"></a>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <table aria-describedby="footer">
-                    <th id="footer"></th>
-                    <tr>
-                        <td style="font-size: 12px; line-height: 18px; font-family: Helvetica, Arial, sans-serif; color:#005e82; padding-bottom: 20px;">
-                            <span class="appleFooter" style="color:#02475b;">{{ application_name }}</span><br>
-                            <a href="{{ application_url }}/contact" style="color: #005e82; text-decoration: none;" target="_blank">Contact</a>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
-                            <a href="{{ application_url }}/terms-conditions" style="color: #005e82; text-decoration: none;" target="_blank">Terms and Conditions</a>
-                            <span style="font-family: Arial, sans-serif; font-size: 12px; color: #444444;">&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;</span>
-                            <a href="{{ application_url }}/privacy-policy" style="color: #005e82; text-decoration: none;" target="_blank">Privacy Policy</a>
-                        </td>
-                    </tr>
-                </table>
+            <td style="font-size: 12px; line-height: 18px; font-family: Helvetica, Arial, sans-serif; color:#005e82; padding-bottom: 20px;">
+                <span class="appleFooter" style="font-size: 16px; color:#02475b;">{{ application_name }}</span><br>
+                <a href="{{ application_url }}/contact" style="color: #005e82; text-decoration: none;" target="_blank">Contact</a>&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;
+                <a href="{{ application_url }}/terms-conditions" style="color: #005e82; text-decoration: none;" target="_blank">Terms and Conditions</a>
+                <span style="font-family: Arial, sans-serif; font-size: 12px; color: #444444;">&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;</span>
+                <a href="{{ application_url }}/privacy-policy" style="color: #005e82; text-decoration: none;" target="_blank">Privacy Policy</a>
             </td>
         </tr>
     </table>
 </body>
+</html>

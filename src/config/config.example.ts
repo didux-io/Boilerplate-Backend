@@ -17,7 +17,7 @@ export const config = {
     // WebRTC
     webRtcEnabled: true,
     stunEnabled: true,
-    stunUrl: "stun.l.google.com:19302",
+    stunUrl: "stun:stun.l.google.com:19302",
     turnEnabled: false,
     turnUrl: "",
     turnExpiration: 8400,
@@ -33,9 +33,15 @@ export const config = {
     emailUser: "",
     emailAppPassword: "",
 
+    // Socials
+    twitterUrl: "",
+    linkedInUrl: "",
+    facebookUrl: "",
+
     // General
     application_name: process.env.APPLICATION || "APPLICATION_NAME",
     application_description: "APPLICATION DESCRIPTION",
+    application_url: "https://www.example.com",
 
     // Account recovery
     accountRecoveryTimeInMinutes: 10,

@@ -4,7 +4,7 @@
 	"description": "Boilerplate Backend",
 	"main": "./build/src/main/index.js",
 	"scripts": {
-		"prebuild": "node prebuild.js; npm run lint",
+		"prebuild": "node prebuild.js",
 		"start": "nodemon ./build/main/index.js",
 		"build": "tsc -p .",
 		"watch": "tsc -w",
@@ -38,14 +38,6 @@
 		"coveragePathIgnorePatterns": [
 			"/node_modules/"
 		],
-		"coverageThreshold": {
-			"global": {
-				"branches": 80,
-				"functions": 80,
-				"lines": 80,
-				"statements": 80
-			}
-		},
 		"coverageReporters": [
 			"json",
 			"lcov",
@@ -95,6 +87,7 @@
 		"solc": "0.7.4",
 		"swagger-jsdoc": "5.0.0",
 		"swagger-ui-express": "^4.1.4",
+		"swig": "^1.4.2",
 		"typescript": "3.9.7",
 		"web3": "1.2.5",
 		"ws": "^7.3.1"

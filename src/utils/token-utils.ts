@@ -10,6 +10,7 @@ export function getJWTToken(user: User): string {
         did: user.did,
         userId: user.id,
         userPower: user.userPower,
+        lang: user.lang,
         user_claims: {
             email: user.email,
             username: user.username

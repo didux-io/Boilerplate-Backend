@@ -1,13 +1,12 @@
 # This workflow will do a clean install of node dependencies and build the source code
 
-name: Test build and push
+name: Test
 
 on:
-  push:
-    branches: [ main ]
+  [ pull_request ]
 
 jobs:
-  testBuildAndPush:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -24,19 +23,6 @@ jobs:
       - run: cp src/config/config.example.ts src/config/config.ts
       - run: npm run test
       - run: npm run sonar -- -Dsonar.host.url=${{ secrets.SONARQUBE_HOST }} -Dsonar.login=${{ secrets.SONARQUBE_TOKEN }} -Dsonar.projectVersion=${{ github.run_number }} -Dsonar.projectKey=${{ github.event.repository.name }}
-      - run: npm run build --if-present
-      - run: echo IMAGE_REPOSITORY=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') >> $GITHUB_ENV
-      - uses: kciter/aws-ecr-action@v1
-        with:
-          access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          account_id: ${{ secrets.AWS_ACCOUNT_ID }}
-          repo: ${{ env.IMAGE_REPOSITORY }}
-          region: ${{ secrets.AWS_REGION }}
-          tags: test,${{ github.run_number }}
-          create_repo: true
-        env:
-          CI: true
       - uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}

@@ -123,7 +123,8 @@ export async function validateSignature(req: Request, res: Response): Promise<vo
                         }, {
                             where: { id: recoveryUser.id }
                         });
-                        sendRecoveryAccount(recoveryUser.email, recoveryCode, recoveryCancelCode);
+                        console.log(recoveryUser.lang);
+                        sendRecoveryAccount(recoveryUser.email, recoveryCode, recoveryCancelCode, recoveryUser.lang);
                     // If we could not find any user
                     } else {
                         // Check if we can find a user with an email (regardless of WebRTC or 'normal' login)

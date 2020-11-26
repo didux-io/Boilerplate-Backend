@@ -85,6 +85,8 @@ export class User extends Model<User> {
     accountRecoveryDid: string;
 
     @AllowNull(true)
-    @Column
+    @Column({
+        defaultValue: 'nl'
+    })
     lang: string;
 }

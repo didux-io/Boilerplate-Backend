@@ -1,8 +1,6 @@
 node_modules
 coverage
 build
-!jwt-keys
-jwt-keys/*
 .idea
 data
 .DS_Store

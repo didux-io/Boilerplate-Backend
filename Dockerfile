@@ -1,5 +1,6 @@
-FROM node:8.12.0
+FROM node:14.15.0
 
+ENV PORT 80
 # Create app directory
 WORKDIR /usr/src/app
 
@@ -14,5 +15,5 @@ RUN npm run build
 # If you are building your code for production
 # RUN npm ci --only=production
 
-EXPOSE 4005
+EXPOSE 80
 CMD [ "node", "build/main/index.js" ]

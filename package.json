@@ -74,7 +74,7 @@
 		"fs": "0.0.1-security",
 		"gmail-send": "^1.8.10",
 		"httpheaderprovider": "^0.3.4",
-		"jsonwebtoken": "^8.5.1",
+		"jsonwebtoken": "^9.0.0",
 		"jwt-decode": "3.0.0",
 		"nedb": "^1.8.0",
 		"node-fetch": "^2.6.1",
